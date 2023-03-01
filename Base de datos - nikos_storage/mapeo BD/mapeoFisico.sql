@@ -5,6 +5,7 @@ USE nikos_storage;
 
 CREATE TABLE ADMINISTRADORES(
     codigo_administrador INT  AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 0,
     nombre_administrador VARCHAR(15) NOT NULL,
     apellido_administrador VARCHAR(15) NOT NULL,
     nick_administrador VARCHAR(15) NOT NULL,
@@ -15,6 +16,7 @@ CREATE TABLE ADMINISTRADORES(
 
 CREATE TABLE BODEGUEROS(
     codigo_bodeguero INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 2,
     nombre_bodeguero VARCHAR(15) NOT NULL,
     apellido_bodeguero VARCHAR(15) NOT NULL,
     nick_bodeguero VARCHAR(15) NOT NULL,
@@ -25,6 +27,7 @@ CREATE TABLE BODEGUEROS(
 
 CREATE TABLE SUPERVISORES(
     codigo_supervisor INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 3,
     nombre_supervisor VARCHAR(15) NOT NULL,
     apellido_supervisor VARCHAR(15) NOT NULL,
     nick_supervisor VARCHAR(15) NOT NULL,
@@ -51,6 +54,7 @@ CREATE TABLE TIENDAS(
 
 CREATE TABLE DEPENDIENTES_TIENDA(
     codigo_dependiente INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 1,
     nombre_dependiente VARCHAR(15) NOT NULL,
     apellido_dependiente VARCHAR(15) NOT NULL,
     nick_dependiente VARCHAR(15) NOT NULL,
