@@ -27,19 +27,19 @@
         </script>
 
         <div class="LogInBody" id="LogInBody">
-            <form class="formularioLogin" id=""formularioLogin method="post" action="iniciarsesion"> 
+            <form class="formularioLogin" id=""formularioLogin method="post" name="user-login" action="/Nikos_Storage/loginServlet.java"> 
                 <h1 class="dispay-3">Iniciar Sesión</h1><br>
 
                 <%-- apartado para pedir credenciales --%>
                 <div class="row">
                     <div class="texto">
-                        <input type="text" class="form-control" placeholder="Usuario" name="usr"><br>
+                        <input type="text" class="form-control" placeholder="Usuario" name="usuario"><br>
                     </div>
                     <div class="texto">
-                        <input type="password" class="form-control" placeholder="Contraseña" name="pswd"><br>
+                        <input type="password" class="form-control" placeholder="Contraseña" name="pasword"><br>
                     </div>
                 </div>
-                
+
                 <%-- apartado para validacion --%>
                 <input type="submit" value="Entrar" id="Entrar" class="btn btn-outline-dark">
                 <input type="button" value="Regresar" id="Regresar" class="btn btn-outline-dark" onclick='location.href = location = "index.html"'');>
