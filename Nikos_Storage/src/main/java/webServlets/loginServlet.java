@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import Security.PasswordEncoder;
 
 /**
  *
@@ -24,9 +25,9 @@ public class loginServlet extends HttpServlet {
         
         String usuario = request.getParameter("usuario");
         String pasword = request.getParameter("password");
-        
+        String encodePswrd = PasswordEncoder.encodePassword(pasword);
         System.out.println("usuario" + usuario);
-        System.out.println("password" + pasword);
+        System.out.println("password" + encodePswrd);
         
         PrintWriter out = response.getWriter();
         
@@ -34,7 +35,7 @@ public class loginServlet extends HttpServlet {
         out.print("<body>");
         out.print("el parametro usuario es " + usuario);
         out.print("</br>");
-        out.print("el parametro contraseña es " +pasword);
+        out.print("el parametro contraseña es " +encodePswrd);
         out.print("</br>");
         out.print("</body>");
         out.print("</html>");
