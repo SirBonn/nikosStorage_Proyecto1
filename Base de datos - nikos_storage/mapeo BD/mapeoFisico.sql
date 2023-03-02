@@ -4,36 +4,36 @@ CREATE DATABASE nikos_storage;
 USE nikos_storage;
 
 CREATE TABLE ADMINISTRADORES(
-    codigo_administrador INT  AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT  AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 0,
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
     nick VARCHAR(15) NOT NULL,
     user_password VARCHAR(20) NOT NULL,
     email VARCHAR(45) NOT NULL,
-    PRIMARY KEY (codigo_administrador)
+    PRIMARY KEY (codigo)
 );
 
 CREATE TABLE BODEGUEROS(
-    codigo_bodeguero INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 2,
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
     nick VARCHAR(15) NOT NULL,
     user_password VARCHAR(20) NOT NULL,
     email VARCHAR(45) NOT NULL, 
-    PRIMARY KEY (codigo_bodeguero)
+    PRIMARY KEY (codigo)
 );
 
 CREATE TABLE SUPERVISORES(
-    codigo_supervisor INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 3,
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
     nick VARCHAR(15) NOT NULL,
     user_password VARCHAR(20) NOT NULL,
     email VARCHAR(45) NOT NULL,
-    PRIMARY KEY (codigo_supervisor)
+    PRIMARY KEY (codigo)
 );
 
 CREATE TABLE TIENDAS(
@@ -46,14 +46,14 @@ CREATE TABLE TIENDAS(
     PRIMARY KEY (codigo_tienda),
     CONSTRAINT bodeguero_proveedor_fk
     FOREIGN KEY (bodeguero_proveedor)
-    REFERENCES BODEGUEROS (codigo_bodeguero),
+    REFERENCES BODEGUEROS (codigo),
     CONSTRAINT supervisor_asignado_fk
     FOREIGN KEY (supervisor_asignado)
-    REFERENCES SUPERVISORES(codigo_supervisor)
+    REFERENCES SUPERVISORES(codigo)
 );
 
 CREATE TABLE DEPENDIENTES(
-    codigo_dependiente INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 1,
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE DEPENDIENTES(
     user_password VARCHAR(20) NOT NULL,
     email VARCHAR(45) NOT NULL,
     empleado_tienda INT NOT NULL,
-    PRIMARY KEY (codigo_dependiente),
+    PRIMARY KEY (codigo),
     CONSTRAINT empleado_tienda_fk
     FOREIGN KEY (empleado_tienda)
     REFERENCES TIENDAS (codigo_tienda)
@@ -76,7 +76,7 @@ CREATE TABLE PEDIDOS(
     PRIMARY KEY(codigo_pedido),
     CONSTRAINT usuario_solicita_fk
     FOREIGN KEY(usuario_solicitante) 
-    REFERENCES DEPENDIENTES(codigo_dependiente)
+    REFERENCES DEPENDIENTES(codigo)
 );
 
 
@@ -158,7 +158,7 @@ CREATE TABLE RECLAMOS_INCIDENCIAS(
     REFERENCES INCIDENCIAS (codigo_incidencia),
     CONSTRAINT bodeguero_encargado_fk_incidencia
     FOREIGN KEY (bodeguero_encargado)
-    REFERENCES BODEGUEROS(codigo_bodeguero)
+    REFERENCES BODEGUEROS(codigo)
 );
 
 CREATE TABLE DEVOLUCIONES(
@@ -187,7 +187,7 @@ CREATE TABLE PRODUCTOS_DEVUELTOS(
     REFERENCES DEVOLUCIONES (codigo_devolucion),
     CONSTRAINT bodeguero_encargado_fk_devolucion
     FOREIGN KEY (bodeguero_encargado)
-    REFERENCES BODEGUEROS(codigo_bodeguero)
+    REFERENCES BODEGUEROS(codigo)
 );
-INSERT INTO ADMINISTRADORES (codigo_administrador, nombre, apellido, nick, user_password, email) 
+INSERT INTO ADMINISTRADORES (codigo, nombre, apellido, nick, user_password, email) 
 VALUES (0,'User', 'Pre-Create','admin','admin','email@email.com');
