@@ -37,8 +37,8 @@ CREATE TABLE SUPERVISORES(
 );
 
 CREATE TABLE TIENDAS(
-    nombre_tienda VARCHAR(40) NOT NULL,
     codigo_tienda INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nombre_tienda VARCHAR(40) NOT NULL,
     direccion_tienda VARCHAR(40) NOT NULL,
     tipo_tienda TINYINT(1) NOT NULL,  /*2 tipos, va de un valor 0 -> 1*/
     supervisor_asignado INT NULL,
