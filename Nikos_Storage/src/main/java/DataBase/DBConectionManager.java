@@ -2,7 +2,11 @@ package DataBase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DBConectionManager {
 
@@ -26,4 +30,29 @@ public class DBConectionManager {
         return connection;
     }
 
+    public static void close(Connection conecction){
+        try {
+            conecction.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+    
+    public static void close(ResultSet resultSet){
+        try {
+            resultSet.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+    
+    public static void close(PreparedStatement preparedStatement){
+        try {
+            preparedStatement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        
+        
+    }
 }
