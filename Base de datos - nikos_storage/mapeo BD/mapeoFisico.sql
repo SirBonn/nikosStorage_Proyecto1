@@ -9,7 +9,7 @@ CREATE TABLE ADMINISTRADORES(
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
     nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(20) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
     email VARCHAR(45) NOT NULL,
     PRIMARY KEY (codigo)
 );
@@ -20,7 +20,7 @@ CREATE TABLE BODEGUEROS(
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
     nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(20) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
     email VARCHAR(45) NOT NULL, 
     PRIMARY KEY (codigo)
 );
@@ -31,13 +31,14 @@ CREATE TABLE SUPERVISORES(
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
     nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(20) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
     email VARCHAR(45) NOT NULL,
     PRIMARY KEY (codigo)
 );
 
 CREATE TABLE TIENDAS(
     codigo_tienda INT AUTO_INCREMENT UNIQUE NOT NULL,
+
     nombre_tienda VARCHAR(40) NOT NULL,
     direccion_tienda VARCHAR(40) NOT NULL,
     tipo_tienda TINYINT(1) NOT NULL,  /*2 tipos, va de un valor 0 -> 1*/
@@ -58,7 +59,7 @@ CREATE TABLE DEPENDIENTES(
     nombre VARCHAR(15) NOT NULL,
     apellido VARCHAR(15) NOT NULL,
     nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(20) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
     email VARCHAR(45) NOT NULL,
     empleado_tienda INT NOT NULL,
     PRIMARY KEY (codigo),
