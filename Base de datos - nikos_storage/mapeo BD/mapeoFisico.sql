@@ -6,33 +6,33 @@ USE nikos_storage;
 CREATE TABLE ADMINISTRADORES(
     codigo_administrador INT  AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 0,
-    nombre_administrador VARCHAR(15) NOT NULL,
-    apellido_administrador VARCHAR(15) NOT NULL,
-    nick_administrador VARCHAR(15) NOT NULL,
-    password_administrador VARCHAR(20) NOT NULL,
-    email_administrador VARCHAR(45) NOT NULL,
+    nombre VARCHAR(15) NOT NULL,
+    apellido VARCHAR(15) NOT NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(20) NOT NULL,
+    email VARCHAR(45) NOT NULL,
     PRIMARY KEY (codigo_administrador)
 );
 
 CREATE TABLE BODEGUEROS(
     codigo_bodeguero INT AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 2,
-    nombre_bodeguero VARCHAR(15) NOT NULL,
-    apellido_bodeguero VARCHAR(15) NOT NULL,
-    nick_bodeguero VARCHAR(15) NOT NULL,
-    password_bodeguero VARCHAR(20) NOT NULL,
-    email_bodeguero VARCHAR(45) NOT NULL, 
+    nombre VARCHAR(15) NOT NULL,
+    apellido VARCHAR(15) NOT NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(20) NOT NULL,
+    email VARCHAR(45) NOT NULL, 
     PRIMARY KEY (codigo_bodeguero)
 );
 
 CREATE TABLE SUPERVISORES(
     codigo_supervisor INT AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 3,
-    nombre_supervisor VARCHAR(15) NOT NULL,
-    apellido_supervisor VARCHAR(15) NOT NULL,
-    nick_supervisor VARCHAR(15) NOT NULL,
-    password_supervisor VARCHAR(20) NOT NULL,
-    email_supervisor VARCHAR(45) NOT NULL,
+    nombre VARCHAR(15) NOT NULL,
+    apellido VARCHAR(15) NOT NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(20) NOT NULL,
+    email VARCHAR(45) NOT NULL,
     PRIMARY KEY (codigo_supervisor)
 );
 
@@ -52,14 +52,14 @@ CREATE TABLE TIENDAS(
     REFERENCES SUPERVISORES(codigo_supervisor)
 );
 
-CREATE TABLE DEPENDIENTES_TIENDA(
+CREATE TABLE DEPENDIENTES(
     codigo_dependiente INT AUTO_INCREMENT UNIQUE NOT NULL,
     nivel_usuario INT DEFAULT 1,
-    nombre_dependiente VARCHAR(15) NOT NULL,
-    apellido_dependiente VARCHAR(15) NOT NULL,
-    nick_dependiente VARCHAR(15) NOT NULL,
-    password_dependiente VARCHAR(20) NOT NULL,
-    email_dependiente VARCHAR(45) NOT NULL,
+    nombre VARCHAR(15) NOT NULL,
+    apellido VARCHAR(15) NOT NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(20) NOT NULL,
+    email VARCHAR(45) NOT NULL,
     empleado_tienda INT NOT NULL,
     PRIMARY KEY (codigo_dependiente),
     CONSTRAINT empleado_tienda_fk
@@ -76,7 +76,7 @@ CREATE TABLE PEDIDOS(
     PRIMARY KEY(codigo_pedido),
     CONSTRAINT usuario_solicita_fk
     FOREIGN KEY(usuario_solicitante) 
-    REFERENCES DEPENDIENTES_TIENDA(codigo_dependiente)
+    REFERENCES DEPENDIENTES(codigo_dependiente)
 );
 
 
@@ -189,3 +189,5 @@ CREATE TABLE PRODUCTOS_DEVUELTOS(
     FOREIGN KEY (bodeguero_encargado)
     REFERENCES BODEGUEROS(codigo_bodeguero)
 );
+INSERT INTO ADMINISTRADORES (codigo_administrador, nombre, apellido, nick, user_password, email) 
+VALUES (0,'User', 'Pre-Create','admin','admin','email@email.com');
