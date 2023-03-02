@@ -13,16 +13,16 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <title>Tiendas Niko</title>
     </head>
+
     <body>
+        <%-- Barra de navegacion--%>
+        <nav>
+            <jsp:include page="WEB-INF/pages/commonPages/navBar.jsp"/>
+        </nav>
+        <nav>
+            <h1>PAGINA DE TIENDAS</h1>
 
-        <nav id="navMenu"></nav>
-        <script src="resources/JavaScript/menu.js"></script>
-        <script>
-            var menuContainer = document.getElementById("navMenu");
-            menuContainer.appendChild(generarMenu());
-        </script>
-
-        <h1>PAGINA DE TIENDAS</h1>
+        </nav>
 
     </body>
 </html>

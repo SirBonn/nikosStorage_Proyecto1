@@ -14,15 +14,12 @@
         <title>Productos Nikos</title>
     </head>
     <body>
+        <%-- Barra de navegacion--%>
+        <nav>
+            <jsp:include page="WEB-INF/pages/commonPages/navBar.jsp"/>
+        </nav>
 
-        <nav id="navMenu"></nav>
-        <script src="resources/JavaScript/menu.js"></script>
-        <script>
-            var menuContainer = document.getElementById("navMenu");
-            menuContainer.appendChild(generarMenu());
-        </script>
-        
-        <h1>PAGINA DE LOGIN</h1>
-        
+        <h1>PAGINA DE PRODUCTOS</h1>
+
     </body>
 </html>

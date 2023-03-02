@@ -19,13 +19,11 @@
     </head>
     <body>
 
-        <nav id="navMenu"></nav>
-        <script src="resources/JavaScript/menu.js"></script>
-        <script>
-            var menuContainer = document.getElementById("navMenu");
-            menuContainer.appendChild(generarMenu());
-        </script>
-
+        <%-- Barra de navegacion--%>
+        <nav>
+            <jsp:include page="WEB-INF/pages/commonPages/navBar.jsp"/>
+        </nav>
+        
         <div class="LogInBody" id="LogInBody">
             <form class="formularioLogin" id=""formularioLogin method="post" name="user-login" action="/Nikos_Storage/loginServlet"> 
                 <h1 class="dispay-3">Iniciar Sesión</h1><br>
