@@ -9,11 +9,8 @@ package dominio;
  *
  * @author sirbon
  */
-
 public class Dependiente extends Usuario {
-    
-    int tiendaAsignada;
-    
+
     public Dependiente() {
     }
 
@@ -21,20 +18,12 @@ public class Dependiente extends Usuario {
         super(codigo);
     }
 
-    public Dependiente(int tiendaAsignada, int codigo, int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
-        super(codigo, levelUsr, nombre, apellido, nickName, password, email);
-        this.tiendaAsignada = tiendaAsignada;
-    }
-
-    public Dependiente(int tiendaAsignada, int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
-        super(levelUsr, nombre, apellido, nickName, password, email);
-        this.tiendaAsignada = tiendaAsignada;
+    public Dependiente(int codigo, String nombre, String username, String password, String email, int tiendaKey) {
+        super(codigo, nombre, username, password, email, tiendaKey);
     }
 
     public Dependiente(int tiendaAsignada, String nombre, String apellido, String nickName, String password, String email) {
         super(nombre, apellido, nickName, password, email);
-        this.tiendaAsignada = tiendaAsignada;
-    }   
+    }
 
-    
 }

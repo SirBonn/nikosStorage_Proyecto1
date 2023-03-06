@@ -18,17 +18,12 @@ public class Bodeguero extends Usuario {
         super(codigo);
     }
 
-    public Bodeguero(int codigo, int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
-        super(codigo, levelUsr, nombre, apellido, nickName, password, email);
-    }
-
-    public Bodeguero(int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
-        super(levelUsr, nombre, apellido, nickName, password, email);
+    public Bodeguero(int codigo, String nombre, String username, String password, String email, int tiendaKey) {
+        super(codigo, nombre, username, password, email, tiendaKey);
     }
 
     public Bodeguero(String nombre, String apellido, String nickName, String password, String email) {
         super(nombre, apellido, nickName, password, email);
     }
-    
-    
+
 }

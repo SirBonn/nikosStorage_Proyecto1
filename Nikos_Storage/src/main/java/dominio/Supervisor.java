@@ -9,25 +9,21 @@ package dominio;
  *
  * @author sirbon
  */
-public class Administrador  extends Usuario{
+public class Supervisor extends Usuario {
 
-    public Administrador() {
+    public Supervisor() {
     }
 
-    public Administrador(int codigo) {
+    public Supervisor(int codigo) {
         super(codigo);
     }
 
-    public Administrador(int codigo, int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
-        super(codigo, levelUsr, nombre, apellido, nickName, password, email);
+    public Supervisor(int codigo, String nombre, String username, String password, String email) {
+        super(codigo, nombre, username, password, email);
     }
 
-    public Administrador(int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
-        super(levelUsr, nombre, apellido, nickName, password, email);
+    public Supervisor(String nombre, String apellido, String username, String password, String email) {
+        super(nombre, apellido, username, password, email);
     }
 
-    public Administrador(String nombre, String apellido, String nickName, String password, String email) {
-        super(nombre, apellido, nickName, password, email);
-    }
-    
 }

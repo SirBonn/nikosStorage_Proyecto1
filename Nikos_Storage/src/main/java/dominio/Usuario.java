@@ -5,6 +5,8 @@
  */
 package dominio;
 
+import security.PasswordEncoder;
+
 /**
  *
  * @author sirbon
@@ -12,44 +14,59 @@ package dominio;
 public class Usuario {
 
     private int codigo;
-    private int nivelAcceso;
+    private int nivelAcceso = -1;
     private String nombre;
     private String apellido;
-    private String nickName;
+    private String username;
     private String password;
     private String email;
+    private int tienda;
 
     public Usuario() {
     }
- 
+
     public Usuario(int codigo) {
         this.codigo = codigo;
     }
 
-    public Usuario(int codigo, int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
+    public Usuario(String username, String password) {
+        this.username = username;
+        this.password = PasswordEncoder.encodePassword(password);
+    }
+
+    public Usuario(int codigo, int levelUsr, String nombre, String apellido, String username, String password, String email, int tiendaKey) {
         this.codigo = codigo;
         this.nivelAcceso = levelUsr;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.nickName = nickName;
-        this.password = password;
+        this.username = username;
+        this.password = PasswordEncoder.encodePassword(password);
         this.email = email;
+        this.tienda = tiendaKey;
     }
-    
-    public Usuario(int levelUsr, String nombre, String apellido, String nickName, String password, String email) {
-        this.nivelAcceso = levelUsr;
+
+    public Usuario(int codigo, String nombre, String username, String password, String email) {
+        this.codigo = codigo;
         this.nombre = nombre;
-        this.apellido = apellido;
-        this.nickName = nickName;
-        this.password = password;
+        this.username = username;
+        this.password = PasswordEncoder.encodePassword(password);
         this.email = email;
     }
 
-    public Usuario(String nombre, String apellido, String nickName, String password, String email) {
+    public Usuario(int codigo, String nombre, String username, String password, String email, int tiendaKey) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.username = username;
+        this.password = PasswordEncoder.encodePassword(password);
+        this.email = email;
+        this.tienda = tiendaKey;
+    }
+
+    public Usuario(String nombre, String apellido, String username, String password, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.nickName = nickName;
-        this.password = password;
+        this.username = username;
+        this.password = PasswordEncoder.encodePassword(password);
         this.email = email;
     }
 
@@ -86,11 +103,11 @@ public class Usuario {
     }
 
     public String getNickName() {
-        return nickName;
+        return username;
     }
 
     public void setNickName(String nickName) {
-        this.nickName = nickName;
+        this.username = nickName;
     }
 
     public String getPassword() {
@@ -98,7 +115,7 @@ public class Usuario {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = PasswordEncoder.encodePassword(password);;
     }
 
     public String getEmail() {
@@ -109,10 +126,19 @@ public class Usuario {
         this.email = email;
     }
 
+    public int getTiendaKey() {
+        return tienda;
+    }
+
+    public void setTiendaKey(int tiendaKey) {
+        this.tienda = tiendaKey;
+    }
+
     @Override
     public String toString() {
-        return "Usuario{" + "\ncodigo=" + codigo + "\nnombre=" + nombre + "\napellido=" + apellido + "\nnickName=" 
-                + nickName + "\npassword=" + password + "\nemail=" + email + '}';
+        return "Usuario{" + "\ncodigo=" + codigo + "\nnivelAcceso=" + nivelAcceso + "\nnombre=" + nombre
+                + "\napellido=" + apellido + "\nnickName=" + username + "\npassword=" + password + "\nemail=" + email
+                + "\ntiendaKey=" + tienda + '}';
     }
 
 }
