@@ -3,81 +3,12 @@ DROP DATABASE IF EXISTS nikos_storage;
 CREATE DATABASE nikos_storage;
 USE nikos_storage;
 
-CREATE TABLE ADMINISTRADORES(
-    codigo INT  AUTO_INCREMENT UNIQUE NOT NULL,
-    nivel_usuario INT DEFAULT 0,
-    nombre VARCHAR(15) NOT NULL,
-    apellido VARCHAR(15) NOT NULL,
-    nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(65) NOT NULL,
-    email VARCHAR(45) NOT NULL,
-    PRIMARY KEY (codigo)
-);
-
-CREATE TABLE BODEGUEROS(
-    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
-    nivel_usuario INT DEFAULT 2,
-    nombre VARCHAR(15) NOT NULL,
-    apellido VARCHAR(15) NOT NULL,
-    nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(65) NOT NULL,
-    email VARCHAR(45) NOT NULL, 
-    PRIMARY KEY (codigo)
-);
-
-CREATE TABLE SUPERVISORES(
-    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
-    nivel_usuario INT DEFAULT 3,
-    nombre VARCHAR(15) NOT NULL,
-    apellido VARCHAR(15) NOT NULL,
-    nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(65) NOT NULL,
-    email VARCHAR(45) NOT NULL,
-    PRIMARY KEY (codigo)
-);
-
 CREATE TABLE TIENDAS(
     codigo_tienda INT AUTO_INCREMENT UNIQUE NOT NULL,
-
-    nombre_tienda VARCHAR(40) NOT NULL,
+    nombre_tienda VARCHAR(40) NULL,
     direccion_tienda VARCHAR(40) NOT NULL,
-    tipo_tienda TINYINT(1) NOT NULL,  /*2 tipos, va de un valor 0 -> 1*/
-    supervisor_asignado INT NULL,
-    bodeguero_proveedor INT NOT NULL,
-    PRIMARY KEY (codigo_tienda),
-    CONSTRAINT bodeguero_proveedor_fk
-    FOREIGN KEY (bodeguero_proveedor)
-    REFERENCES BODEGUEROS (codigo),
-    CONSTRAINT supervisor_asignado_fk
-    FOREIGN KEY (supervisor_asignado)
-    REFERENCES SUPERVISORES(codigo)
-);
-
-CREATE TABLE DEPENDIENTES(
-    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
-    nivel_usuario INT DEFAULT 1,
-    nombre VARCHAR(15) NOT NULL,
-    apellido VARCHAR(15) NOT NULL,
-    nick VARCHAR(15) NOT NULL,
-    user_password VARCHAR(65) NOT NULL,
-    email VARCHAR(45) NOT NULL,
-    empleado_tienda INT NOT NULL,
-    PRIMARY KEY (codigo),
-    CONSTRAINT empleado_tienda_fk
-    FOREIGN KEY (empleado_tienda)
-    REFERENCES TIENDAS (codigo_tienda)
-);
-
-CREATE TABLE PEDIDOS(
-    codigo_pedido INT AUTO_INCREMENT UNIQUE NOT NULL,
-    fecha_pedido DATETIME NOT NULL,
-    costo_total_pedido DECIMAL(2) NOT NULL,
-    estado_pedido TINYINT(4) NOT NULL, /*5 estados, de un valor 0 -> 4*/
-    usuario_solicitante INT NOT NULL,
-    PRIMARY KEY(codigo_pedido),
-    CONSTRAINT usuario_solicita_fk
-    FOREIGN KEY(usuario_solicitante) 
-    REFERENCES DEPENDIENTES(codigo)
+    tipo_tienda VARCHAR(12) NOT NULL,
+    PRIMARY KEY (codigo_tienda)
 );
 
 
@@ -89,6 +20,76 @@ CREATE TABLE PRODUCTOS(
     existencia_producto INT NOT NULL,
     PRIMARY KEY (codigo_producto)
 );
+
+CREATE TABLE ADMINISTRADORES(
+    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 0,
+    nombre VARCHAR(25) NOT NULL,
+    apellido VARCHAR(15) NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
+    email VARCHAR(45) NULL,
+    PRIMARY KEY (codigo)
+);
+
+CREATE TABLE BODEGUEROS(
+    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 2,
+    nombre VARCHAR(25) NOT NULL,
+    apellido VARCHAR(15) NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
+    email VARCHAR(45) NOT NULL, 
+    tienda_asignada INT NOT NULL,
+    PRIMARY KEY (codigo),
+    CONSTRAINT tienda_atendida_fk
+    FOREIGN KEY(tienda_asignada)
+    REFERENCES TIENDAS(codigo_tienda)
+);
+
+CREATE TABLE SUPERVISORES(
+    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 3,
+    nombre VARCHAR(25) NOT NULL,
+    apellido VARCHAR(15) NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
+    email VARCHAR(45) NOT NULL,
+    tienda_asignada INT NOT NULL,
+    PRIMARY KEY (codigo),
+    CONSTRAINT tienda_supervisada_fk
+    FOREIGN KEY(tienda_asignada)
+    REFERENCES TIENDAS(codigo_tienda)
+);
+
+
+CREATE TABLE DEPENDIENTES(
+    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    nivel_usuario INT DEFAULT 1,
+    nombre VARCHAR(25) NOT NULL,
+    apellido VARCHAR(15) NULL,
+    nick VARCHAR(15) NOT NULL,
+    user_password VARCHAR(65) NOT NULL,
+    email VARCHAR(45) NOT NULL,
+    tienda_asignada INT NOT NULL,
+    PRIMARY KEY (codigo),
+    CONSTRAINT tienda_dependiente_fk
+    FOREIGN KEY (tienda_asignada)
+    REFERENCES TIENDAS (codigo_tienda)
+);
+
+CREATE TABLE PEDIDOS(
+    codigo_pedido INT AUTO_INCREMENT UNIQUE NOT NULL,
+    fecha_pedido DATETIME NOT NULL,
+    costo_total_pedido DECIMAL(2) NOT NULL,
+    estado_pedido VARCHAR(15) NOT NULL, /*5 estados, de un valor 0 -> 4*/
+    usuario_solicitante INT NOT NULL,
+    PRIMARY KEY(codigo_pedido),
+    CONSTRAINT usuario_solicita_fk
+    FOREIGN KEY(usuario_solicitante) 
+    REFERENCES DEPENDIENTES(codigo)
+);
+
 
 CREATE TABLE LISTADO_PRODUCTOS(
     codigo_pedido INT NOT NULL, 
@@ -122,7 +123,7 @@ CREATE TABLE ENVIOS(
     codigo_envio INT AUTO_INCREMENT UNIQUE NOT NULL,
     fecha_envio DATETIME NOT NULL, 
     fecha_recepcion DATETIME NOT NULL,
-    estado_envio TINYINT(1) NOT NULL, /* 2 estados, va de un valor 0 -> 1*/
+    estado_envio VARCHAR(15) NOT NULL, /* 2 estados, va de un valor 0 -> 1*/
     precio_envio DECIMAL(2) NOT NULL,
     productos_enviados INT NOT NULL,
     tienda_destino INT NOT NULL,
@@ -138,7 +139,7 @@ CREATE TABLE ENVIOS(
 CREATE TABLE INCIDENCIAS(
     codigo_incidencia INT AUTO_INCREMENT UNIQUE NOT NULL,
     fecha_incidencia DATETIME NOT NULL,
-    estado_incidencia TINYINT(1) NOT NULL, /* 2 estados, va de un valor 0->1*/
+    estado_incidencia VARCHAR(15) NOT NULL, /* 2 estados, va de un valor 0->1*/
     total_afectado DECIMAL(2) NOT NULL,
     envio_incidente INT NOT NULL,
     PRIMARY KEY (codigo_incidencia),
@@ -150,7 +151,7 @@ CREATE TABLE INCIDENCIAS(
 CREATE TABLE RECLAMOS_INCIDENCIAS(
     codigo_incidencia INT NOT NULL,
     cantidad_afectada INT NOT NULL,
-    motivo_incidencia TINYINT(4) NOT NULL, /*5 motivos, va de un valor 0 -> 4*/
+    motivo_incidencia VARCHAR(25) NOT NULL, /*5 motivos, va de un valor 0 -> 4*/
     bodeguero_encargado INT NOT NULL,
     codigo_producto_incidente INT NOT NULL,
     PRIMARY KEY (codigo_incidencia),
@@ -165,7 +166,7 @@ CREATE TABLE RECLAMOS_INCIDENCIAS(
 CREATE TABLE DEVOLUCIONES(
     codigo_devolucion INT AUTO_INCREMENT UNIQUE NOT NULL,
     fecha_devolucion DATETIME NOT NULL,
-    estado_devolucion TINYINT(2) NOT NULL, /*3 estados, de un valor 0 -> 2*/
+    estado_devolucion VARCHAR(15) NOT NULL, /*3 estados, de un valor 0 -> 2*/
     total_devuelto DECIMAL(2) NOT NULL,
     envio_devuelto INT NOT NULL,
     PRIMARY KEY (codigo_devolucion),
@@ -179,7 +180,7 @@ CREATE TABLE PRODUCTOS_DEVUELTOS(
     cantidad_devuelta INT NOT NULL,
     precio_costo_devuelto DECIMAL(2) NOT NULL,
     precio_total_devuelto DECIMAL(2) NOT NULL,
-    motivo_devolucion TINYINT(3) NOT NULL, /*4 motivos, de un valor 0 -> 3*/
+    motivo_devolucion VARCHAR(25) NOT NULL, /*4 motivos, de un valor 0 -> 3*/
     bodeguero_encargado INT NOT NULL,
     codigo_producto_incidente INT NOT NULL,
     PRIMARY KEY (codigo_devolucion),
@@ -191,4 +192,4 @@ CREATE TABLE PRODUCTOS_DEVUELTOS(
     REFERENCES BODEGUEROS(codigo)
 );
 INSERT INTO ADMINISTRADORES (codigo, nombre, apellido, nick, user_password, email) 
-VALUES (0,'User', 'Pre-Create','admin','admin','email@email.com');
+VALUES (0,'User', 'Pre-Create','admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','email@email.com');
