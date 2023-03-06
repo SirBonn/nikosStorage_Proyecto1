@@ -14,16 +14,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="tiendas-niko.jsp">Nuestras Tiendas</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.jsp">Iniciar Sesion</a>
-                </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#"  role="button" data-bs-toggle="dropdown">Acerca de Nosotros</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Acerca de Nosotros</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Vision</a></li>
                         <li><a class="dropdown-item" href="#">Mision</a></li>
                         <li><a class="dropdown-item" href="#">Contactos</a></li>
                     </ul>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="login.jsp">Iniciar Sesion</a>
                 </li>
             </ul>
         </div>
