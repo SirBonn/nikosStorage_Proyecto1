@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DataBase;
+package dataBase;
 
 import java.util.*;
 import dominio.*;
@@ -18,7 +18,7 @@ public class UsuarioDAO {
     public List<Usuario> listarUsuarios(String table) {
 
         final String SQL_SELECT = "SELECT codigo_administrador, nombre_administrador, apellido_administrador, nick_administrador"
-                + "password_administsrador, email_administrador from " + table;
+                + "password_administsrador, email_administrador, nivel_usuario, tienda_asignada from " + table;
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -38,8 +38,10 @@ public class UsuarioDAO {
                 String nick = resultSet.getString("nick");
                 String password = resultSet.getString("user_password");
                 String email = resultSet.getString("email");
+                int lvlUsr = resultSet.getInt("nivel_usuario");
+                int tienda = resultSet.getInt("tienda_asignada");
 
-                Usuario Usuario = new Usuario(nombre, apellido, nick, password, email);
+                Usuario Usuario = new Usuario(codigo, lvlUsr, nombre, apellido, nick, password, email, tienda);
                 usuarios.add(Usuario);
 
             }
@@ -56,11 +58,11 @@ public class UsuarioDAO {
 
         return usuarios;
     }
-    
+
     public Usuario buscarUsuario(Usuario usuario, String table) {
 
         final String SQL_SELECT_BY_ID = "SELECT codigo, nombre, apellido, "
-                + "nick, user_password, email from " + table + " WHERE codigo = ?";
+                + "nick, user_password, email, nivel_usuario, tienda_asignada from " + table + " WHERE codigo = ?";
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -69,7 +71,7 @@ public class UsuarioDAO {
         try {
             connection = DBConectionManager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_SELECT_BY_ID);
-            preparedStatement.setInt(0, usuario.getCodigo());
+            preparedStatement.setInt(1, usuario.getCodigo());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -83,6 +85,10 @@ public class UsuarioDAO {
             usuario.setPassword(password);
             String email = resultSet.getString("email");
             usuario.setEmail(email);
+            int lvlUsr = resultSet.getInt("nivel_usuario");
+            usuario.setLevelUsr(lvlUsr);
+            int tienda = resultSet.getInt("tienda_asignada");
+            usuario.setTiendaKey(tienda);
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -93,12 +99,96 @@ public class UsuarioDAO {
             DBConectionManager.close(preparedStatement);
 
         }
+
+        return usuario;
+    }
+
+    public Usuario logearUsuario(Usuario usuario) {
+
+        String tables[] = {"ADMINISTRADORES", "DEPENDIENTES", "BODEGUEROS", "SUPERVISORES"};
+        int count = 0;
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConectionManager.getConnection();
+
+            do {
+                String table = tables[count];
+                String SQL_SELECT_BY_NAME = "SELECT codigo, nombre, apellido, "
+                        + "email, nivel_usuario FROM " + table + " WHERE nick = ? AND user_password=?";
+                preparedStatement = connection.prepareStatement(SQL_SELECT_BY_NAME);
+                preparedStatement.setString(1, usuario.getNickName());
+                preparedStatement.setString(2, usuario.getPassword());
+                resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+                int codigo = resultSet.getInt("codigo");
+                usuario.setCodigo(codigo);
+                String nombre = resultSet.getString("nombre");
+                usuario.setNombre(nombre);
+                String apellido = resultSet.getString("apellido");
+                usuario.setApellido(apellido);
+                String email = resultSet.getString("email");
+                usuario.setEmail(email);
+                int lvlUsr = resultSet.getInt("nivel_usuario");
+                usuario.setLevelUsr(lvlUsr);
+
+                count++;
+
+            } while (usuario.getCodigo() == 0 || count < 3);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
         return usuario;
     }
 
     public int insertUsuario(Usuario usuario, String table) {
 
-        final String SQL_INSERT = "INSERT INTO" + table + " (nombre, apellido,"
+        final String SQL_INSERT = "INSERT INTO " + table + " (nombre, apellido,"
+                + " nick, user_password, email, tienda_asignada) VALUES (?, ?, ?, ?, ?, ?)";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        int rowsAfected = 0;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_INSERT);
+
+            preparedStatement.setString(1, usuario.getNombre());
+            preparedStatement.setString(2, usuario.getApellido());
+            preparedStatement.setString(3, usuario.getNickName());
+            preparedStatement.setString(4, usuario.getPassword());
+            preparedStatement.setString(5, usuario.getEmail());
+            preparedStatement.setInt(6, usuario.getTiendaKey());
+
+            rowsAfected = preparedStatement.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return rowsAfected;
+    }
+
+    public int insertAdmin(Usuario usuario, String table) {
+
+        final String SQL_INSERT = "INSERT INTO " + table + " (nombre, apellido,"
                 + " nick, user_password, email) VALUES (?, ?, ?, ?, ?)";
 
         Connection connection = null;
@@ -128,7 +218,7 @@ public class UsuarioDAO {
 
         return rowsAfected;
     }
-
+    
     public int actualizarUsuario(Usuario usuario, String table) {
         final String SQL_UPDATE = "UPDATE " + table + " SET nombre=?, apellido=?, "
                 + "nick=? WHERE codigo=?";
