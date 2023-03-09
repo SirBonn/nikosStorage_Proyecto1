@@ -8,8 +8,7 @@ import lombok.ToString;
  *
  * @author sirbon
  */
-
-@ToString 
+@ToString
 @Getter
 @Setter
 public class Tienda {
@@ -17,9 +16,8 @@ public class Tienda {
     private int codigo_tienda;
     private String nombre;
     private String direccion;
-    private boolean esSupervisada;
-    private int codigo_supervisor;
-    private int codigo_bodeguero;
+    private String tipo;
+    private Catalogo catalogo;
 
     public Tienda() {
     }
@@ -28,39 +26,32 @@ public class Tienda {
         this.codigo_tienda = codigo_tienda;
     }
 
-    //constructores tiendas no supervisadas
-    public Tienda(int codigo_tienda, String nombre, String direccion, boolean esSupervisada, int codigo_bodeguero) {
+    public Tienda(int codigo_tienda, String direccion, String tipo) {
+        this.codigo_tienda = codigo_tienda;
+        this.direccion = direccion;
+        this.tipo = tipo;
+    }
+
+    public Tienda(int codigo_tienda, String nombre, String direccion, String esSupervisada) {
         this.codigo_tienda = codigo_tienda;
         this.nombre = nombre;
         this.direccion = direccion;
-        this.esSupervisada = esSupervisada;
-        this.codigo_bodeguero = codigo_bodeguero;
+        this.tipo = esSupervisada;
     }
 
-    public Tienda(String nombre, String direccion, boolean esSupervisada, int codigo_bodeguero) {
+    public Tienda(String nombre, String direccion, String tipo) {
         this.nombre = nombre;
         this.direccion = direccion;
-        this.esSupervisada = esSupervisada;
-        this.codigo_bodeguero = codigo_bodeguero;
+        this.tipo = tipo;
     }
 
-    // constructores tiendas supervisadas
-    public Tienda(int codigo_tienda, String nombre, String direccion, boolean esSupervisada, int codigo_supervisor, int codigo_bodeguero) {
-        this.codigo_tienda = codigo_tienda;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.esSupervisada = esSupervisada;
-        this.codigo_supervisor = codigo_supervisor;
-        this.codigo_bodeguero = codigo_bodeguero;
-    }
-
-    public Tienda(String nombre, String direccion, boolean esSupervisada, int codigo_supervisor, int codigo_bodeguero) {
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.esSupervisada = esSupervisada;
-        this.codigo_supervisor = codigo_supervisor;
-        this.codigo_bodeguero = codigo_bodeguero;
+    public void crearCatalogo(){
+        this.catalogo = new Catalogo(this.codigo_tienda);
     }
     
-    
+    public void agregarAlCatalogo(Producto producto) {
+        catalogo.agregarProducto(producto);
+
+    }
+
 }
