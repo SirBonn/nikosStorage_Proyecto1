@@ -20,6 +20,9 @@ import javax.servlet.RequestDispatcher;
 @WebServlet("/loginServlet")
 public class loginServlet extends HttpServlet {
 
+    Usuario loggedUsuario;
+    UsuarioDAO usuarioDAO = new UsuarioDAO();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //leemos los parametros 
@@ -27,31 +30,43 @@ public class loginServlet extends HttpServlet {
         String nick = request.getParameter("usuario");
         String pasword = request.getParameter("password");
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario loggedUsuario = usuarioDAO.logearUsuario(new Usuario(nick, pasword));
         HttpSession session = request.getSession();
-        session.setAttribute(nick, loggedUsuario.getPassword());
-
-        if (loggedUsuario.getLevelUsr() == 0) {
+        boolean isLogged = isLogged(nick, pasword);
+        
+        if (isLogged && loggedUsuario.getLevelUsr() == 0) {
 
             response.sendRedirect("gestion-administrativa.jsp");
+            session.setAttribute(nick, loggedUsuario.getPassword());
 
-        } else if (loggedUsuario.getLevelUsr() == 1) {
+        } else if (isLogged && loggedUsuario.getLevelUsr() == 1) {
             response.sendRedirect("gestion-tienda.jsp");
+            session.setAttribute(nick, loggedUsuario.getPassword());
 
-        } else if (loggedUsuario.getLevelUsr() == 2) {
-            response.sendRedirect("gestion-bodeguera.jsp");
+        } else if (isLogged && loggedUsuario.getLevelUsr() == 2) {
+            response.sendRedirect("gestion-bodega.jsp");
+            session.setAttribute(nick, loggedUsuario.getPassword());
 
-        } else if (loggedUsuario.getLevelUsr() == 3) {
+        } else if (isLogged && loggedUsuario.getLevelUsr() == 3) {
             response.sendRedirect("gestion-supervisora.jsp");
+            session.setAttribute(nick, loggedUsuario.getPassword());
 
-        } else if (loggedUsuario.getLevelUsr() < 0) {
+        } else {
             request.setAttribute("error", "Usuario o contraseña incorrectos");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
-            dispatcher.forward(request, response);
-
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
 
+    }
+
+    public boolean isLogged(String username, String password) {
+        Usuario tmpUsuario = usuarioDAO.logearUsuario(new Usuario(username, password));
+        if (tmpUsuario.getLevelUsr() == -1) {
+            return false;
+        } else {
+
+            loggedUsuario = tmpUsuario;
+
+        }
+        return true;
     }
 
 }

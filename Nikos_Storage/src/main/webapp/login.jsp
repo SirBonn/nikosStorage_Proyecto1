@@ -1,9 +1,4 @@
-<%-- 
-    Document   : login
-    Created on : 26 feb. 2023, 19:53:46
-    Author     : sirbon
---%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,9 +6,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <jsp:include page="WEB-INF/pages/commonPages/commonHead.jsp"/>
-
         <link rel="stylesheet" href="resources/CSS/login.css"  type="text/css" media="all" >
-
         <title>Iniciar Sesion</title>
     </head>
     <body>
@@ -34,12 +27,12 @@
                 <div class="form-group">
                     <input type="text" class="form-control" id="usuario" placeholder="Usuario" name="usuario" required>
                     <div class="valid-feedback">Valid.</div>
-                    <div class="invalid-feedback">Please fill out this field.</div>
+                    <div class="invalid-feedback">Porfavor ingrese un usuario</div>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" id="password" placeholder="Contraseña" name="password" required>
                     <div class="valid-feedback">Valid.</div>
-                    <div class="invalid-feedback">Please fill out this field.</div>
+                    <div class="invalid-feedback">Porfavor ingrese una contraseña</div>
                 </div>
 
                 <%-- apartado para validacion --%>
@@ -48,6 +41,12 @@
                 <br>
 
             </form>
+
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger">
+                    <strong>ERROR!</strong> ${error}
+                </div>
+            </c:if>
 
         </div>
     </body>
