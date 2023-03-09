@@ -105,8 +105,8 @@ public class UsuarioDAO {
 
     public Usuario logearUsuario(Usuario usuario) {
 
-        String tables[] = {"ADMINISTRADORES", "DEPENDIENTES", "BODEGUEROS", "SUPERVISORES"};
-        int count = 0;
+        List<String> tables = Arrays.asList("ADMINISTRADORES", "DEPENDIENTES", "BODEGUEROS", "SUPERVISORES");
+        boolean isUsuario = false;
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -115,29 +115,28 @@ public class UsuarioDAO {
         try {
             connection = DBConectionManager.getConnection();
 
-            do {
-                String table = tables[count];
-                String SQL_SELECT_BY_NAME = "SELECT codigo, nombre, apellido, "
-                        + "email, nivel_usuario FROM " + table + " WHERE nick = ? AND user_password=?";
+            for (String table : tables) {
+
+                String SQL_SELECT_BY_NAME = "SELECT * FROM " + table + " WHERE nick = ? AND user_password=?";
                 preparedStatement = connection.prepareStatement(SQL_SELECT_BY_NAME);
                 preparedStatement.setString(1, usuario.getNickName());
                 preparedStatement.setString(2, usuario.getPassword());
                 resultSet = preparedStatement.executeQuery();
-                resultSet.next();
-                int codigo = resultSet.getInt("codigo");
-                usuario.setCodigo(codigo);
-                String nombre = resultSet.getString("nombre");
-                usuario.setNombre(nombre);
-                String apellido = resultSet.getString("apellido");
-                usuario.setApellido(apellido);
-                String email = resultSet.getString("email");
-                usuario.setEmail(email);
-                int lvlUsr = resultSet.getInt("nivel_usuario");
-                usuario.setLevelUsr(lvlUsr);
+                
+                while (resultSet.next()) {
+                    int codigo = resultSet.getInt("codigo");
+                    usuario.setCodigo(codigo);
+                    String nombre = resultSet.getString("nombre");
+                    usuario.setNombre(nombre);
+                    String apellido = resultSet.getString("apellido");
+                    usuario.setApellido(apellido);
+                    String email = resultSet.getString("email");
+                    usuario.setEmail(email);
+                    int lvlUsr = resultSet.getInt("nivel_usuario");
+                    usuario.setLevelUsr(lvlUsr);
+                }
 
-                count++;
-
-            } while (usuario.getCodigo() == 0 || count < 3);
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -173,7 +172,7 @@ public class UsuarioDAO {
                 preparedStatement.setInt(6, usuario.getTiendaKey());
 
             }
-            
+
             rowsAfected = preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {

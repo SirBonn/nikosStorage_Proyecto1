@@ -37,7 +37,9 @@ public class FileManager {
         } catch (JsonProcessingException ex) {
             Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            
             Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
 
     }
@@ -47,7 +49,7 @@ public class FileManager {
 
         cargarProductos();
         cargarTiendas();
-        int usuariosCargados = cargarUsuarios();
+        cargarUsuarios();
 
         return rowsAffected;
     }
@@ -59,9 +61,9 @@ public class FileManager {
 
         //supervisores
         ArrayList<Supervisor> supervisores = new ArrayList<>();
-        JsonNode usuariosJsonNode = rootNode.get("supervisores");
+        JsonNode supervisorNode = rootNode.get("supervisores");
 
-        for (JsonNode usuarioJsonNode : usuariosJsonNode) {
+        for (JsonNode usuarioJsonNode : supervisorNode) {
 
             int codigo = usuarioJsonNode.get("codigo").asInt();
             String nombre = usuarioJsonNode.get("nombre").asText();
@@ -76,7 +78,27 @@ public class FileManager {
 
             rowsAffected += usuarioDAO.insertUsuario(sup, "SUPERVISORES");
         }
+        
+        //Administradores
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+        JsonNode usuariosJsonNode = rootNode.get("admins");
 
+        for (JsonNode usuarioJsonNode : usuariosJsonNode) {
+
+            int codigo = usuarioJsonNode.get("codigo").asInt();
+            String nombre = usuarioJsonNode.get("nombre").asText();
+            String username = usuarioJsonNode.get("username").asText();
+            String password = usuarioJsonNode.get("password").asText();
+            String email = usuarioJsonNode.get("email").asText();
+            Usuario usuario = new Usuario(codigo, nombre, username, password, email);
+            usuarios.add(usuario);
+
+        }
+        for (Usuario usr : usuarios) {
+
+            rowsAffected += usuarioDAO.insertUsuario(usr, "SUPERVISORES");
+        }
+        
         //Dependientes
         ArrayList<Dependiente> dependientes = new ArrayList<>();
         JsonNode dependientesNode = rootNode.get("usuariostienda");
