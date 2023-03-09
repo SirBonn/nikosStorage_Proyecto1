@@ -4,7 +4,7 @@ CREATE DATABASE nikos_storage;
 USE nikos_storage;
 
 CREATE TABLE TIENDAS(
-    codigo_tienda INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo_tienda INT AUTO_INCREMENT NOT NULL,
     nombre_tienda VARCHAR(40) NULL,
     direccion_tienda VARCHAR(40) NOT NULL,
     tipo_tienda VARCHAR(12) NOT NULL,
@@ -13,16 +13,16 @@ CREATE TABLE TIENDAS(
 
 
 CREATE TABLE PRODUCTOS(
-    codigo_producto INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo_producto INT AUTO_INCREMENT NOT NULL,
     nombre_producto VARCHAR(40) NOT NULL,
-    precio_costo_producto DECIMAL(2) NOT NULL,
-    precio_venta_producto DECIMAL(2) NOT NULL,
+    precio_costo_producto DECIMAL(5,2) NOT NULL,
+    precio_venta_producto DECIMAL(5,2) NOT NULL,
     existencia_producto INT NOT NULL,
     PRIMARY KEY (codigo_producto)
 );
 
 CREATE TABLE ADMINISTRADORES(
-    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT AUTO_INCREMENT NOT NULL,
     nivel_usuario INT DEFAULT 0,
     nombre VARCHAR(25) NOT NULL,
     apellido VARCHAR(15) NULL,
@@ -33,7 +33,7 @@ CREATE TABLE ADMINISTRADORES(
 );
 
 CREATE TABLE BODEGUEROS(
-    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT AUTO_INCREMENT NOT NULL,
     nivel_usuario INT DEFAULT 2,
     nombre VARCHAR(25) NOT NULL,
     apellido VARCHAR(15) NULL,
@@ -48,23 +48,19 @@ CREATE TABLE BODEGUEROS(
 );
 
 CREATE TABLE SUPERVISORES(
-    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT AUTO_INCREMENT NOT NULL,
     nivel_usuario INT DEFAULT 3,
     nombre VARCHAR(25) NOT NULL,
     apellido VARCHAR(15) NULL,
     nick VARCHAR(15) NOT NULL,
     user_password VARCHAR(65) NOT NULL,
     email VARCHAR(45) NOT NULL,
-    tienda_asignada INT NOT NULL,
-    PRIMARY KEY (codigo),
-    CONSTRAINT tienda_supervisada_fk
-    FOREIGN KEY(tienda_asignada)
-    REFERENCES TIENDAS(codigo_tienda)
+    PRIMARY KEY (codigo)
 );
 
 
 CREATE TABLE DEPENDIENTES(
-    codigo INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo INT AUTO_INCREMENT NOT NULL,
     nivel_usuario INT DEFAULT 1,
     nombre VARCHAR(25) NOT NULL,
     apellido VARCHAR(15) NULL,
@@ -79,9 +75,9 @@ CREATE TABLE DEPENDIENTES(
 );
 
 CREATE TABLE PEDIDOS(
-    codigo_pedido INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo_pedido INT AUTO_INCREMENT NOT NULL,
     fecha_pedido DATETIME NOT NULL,
-    costo_total_pedido DECIMAL(2) NOT NULL,
+    costo_total_pedido DECIMAL(5,2) NOT NULL,
     estado_pedido VARCHAR(15) NOT NULL, /*5 estados, de un valor 0 -> 4*/
     usuario_solicitante INT NOT NULL,
     PRIMARY KEY(codigo_pedido),
@@ -95,8 +91,8 @@ CREATE TABLE LISTADO_PRODUCTOS(
     codigo_pedido INT NOT NULL, 
     codigo_producto INT NOT NULL,
     cantidad INT NOT NULL,
-    precio_costo DECIMAL(2) NOT NULL,
-    precio_total DECIMAL(2) NOT NULL,
+    precio_costo DECIMAL(5,2) NOT NULL,
+    precio_total DECIMAL(5,2) NOT NULL,
     PRIMARY KEY(codigo_pedido, codigo_producto),
     CONSTRAINT pedido_listado_fk
     FOREIGN KEY (codigo_pedido) 
@@ -120,11 +116,11 @@ CREATE TABLE CATALOGO(
 );
 
 CREATE TABLE ENVIOS(
-    codigo_envio INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo_envio INT AUTO_INCREMENT NOT NULL,
     fecha_envio DATETIME NOT NULL, 
     fecha_recepcion DATETIME NOT NULL,
     estado_envio VARCHAR(15) NOT NULL, /* 2 estados, va de un valor 0 -> 1*/
-    precio_envio DECIMAL(2) NOT NULL,
+    precio_envio DECIMAL(5,2) NOT NULL,
     productos_enviados INT NOT NULL,
     tienda_destino INT NOT NULL,
     PRIMARY KEY (codigo_envio),
@@ -137,10 +133,10 @@ CREATE TABLE ENVIOS(
 );
 
 CREATE TABLE INCIDENCIAS(
-    codigo_incidencia INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo_incidencia INT AUTO_INCREMENT NOT NULL,
     fecha_incidencia DATETIME NOT NULL,
     estado_incidencia VARCHAR(15) NOT NULL, /* 2 estados, va de un valor 0->1*/
-    total_afectado DECIMAL(2) NOT NULL,
+    total_afectado DECIMAL(5,2) NOT NULL,
     envio_incidente INT NOT NULL,
     PRIMARY KEY (codigo_incidencia),
     CONSTRAINT envio_incidente_fk
@@ -164,10 +160,10 @@ CREATE TABLE RECLAMOS_INCIDENCIAS(
 );
 
 CREATE TABLE DEVOLUCIONES(
-    codigo_devolucion INT AUTO_INCREMENT UNIQUE NOT NULL,
+    codigo_devolucion INT AUTO_INCREMENT NOT NULL,
     fecha_devolucion DATETIME NOT NULL,
     estado_devolucion VARCHAR(15) NOT NULL, /*3 estados, de un valor 0 -> 2*/
-    total_devuelto DECIMAL(2) NOT NULL,
+    total_devuelto DECIMAL(5,2) NOT NULL,
     envio_devuelto INT NOT NULL,
     PRIMARY KEY (codigo_devolucion),
     CONSTRAINT envio_devuelto_fk
@@ -178,8 +174,8 @@ CREATE TABLE DEVOLUCIONES(
 CREATE TABLE PRODUCTOS_DEVUELTOS(
     codigo_devolucion INT NOT NULL,
     cantidad_devuelta INT NOT NULL,
-    precio_costo_devuelto DECIMAL(2) NOT NULL,
-    precio_total_devuelto DECIMAL(2) NOT NULL,
+    precio_costo_devuelto DECIMAL(5,2) NOT NULL,
+    precio_total_devuelto DECIMAL(5,2) NOT NULL,
     motivo_devolucion VARCHAR(25) NOT NULL, /*4 motivos, de un valor 0 -> 3*/
     bodeguero_encargado INT NOT NULL,
     codigo_producto_incidente INT NOT NULL,
