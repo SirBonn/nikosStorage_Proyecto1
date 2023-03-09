@@ -41,8 +41,8 @@ public class UsuarioDAO {
                 int lvlUsr = resultSet.getInt("nivel_usuario");
                 int tienda = resultSet.getInt("tienda_asignada");
 
-                Usuario Usuario = new Usuario(codigo, lvlUsr, nombre, apellido, nick, password, email, tienda);
-                usuarios.add(Usuario);
+                usuario = new Usuario(codigo, lvlUsr, nombre, apellido, nick, password, email, tienda);
+                usuarios.add(usuario);
 
             }
 
@@ -61,7 +61,7 @@ public class UsuarioDAO {
 
     public Usuario buscarUsuario(Usuario usuario, String table) {
 
-        final String SQL_SELECT_BY_ID = "SELECT codigo, nombre, apellido, "
+        String SQL_SELECT_BY_ID = "SELECT codigo, nombre, apellido, "
                 + "nick, user_password, email, nivel_usuario, tienda_asignada from " + table + " WHERE codigo = ?";
 
         Connection connection = null;
@@ -154,8 +154,7 @@ public class UsuarioDAO {
 
     public int insertUsuario(Usuario usuario, String table) {
 
-        final String SQL_INSERT = "INSERT INTO " + table + " (nombre, apellido,"
-                + " nick, user_password, email, tienda_asignada) VALUES (?, ?, ?, ?, ?, ?)";
+        final String SQL_INSERT = userSelect(table);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -170,14 +169,18 @@ public class UsuarioDAO {
             preparedStatement.setString(3, usuario.getNickName());
             preparedStatement.setString(4, usuario.getPassword());
             preparedStatement.setString(5, usuario.getEmail());
-            preparedStatement.setInt(6, usuario.getTiendaKey());
+            if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
+                preparedStatement.setInt(6, usuario.getTiendaKey());
 
+            }
+            
             rowsAfected = preparedStatement.executeUpdate();
 
         } catch (SQLException ex) {
+            System.out.println("error al agregar un usuario");
             ex.printStackTrace(System.out);
         } finally {
-
+            System.out.println("se agregro un usuario correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
@@ -218,7 +221,7 @@ public class UsuarioDAO {
 
         return rowsAfected;
     }
-    
+
     public int actualizarUsuario(Usuario usuario, String table) {
         final String SQL_UPDATE = "UPDATE " + table + " SET nombre=?, apellido=?, "
                 + "nick=? WHERE codigo=?";
@@ -262,7 +265,7 @@ public class UsuarioDAO {
             connection = DBConectionManager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_DELETE);
 
-            preparedStatement.setInt(4, usuario.getCodigo());
+            preparedStatement.setInt(1, usuario.getCodigo());
 
             rowsAfected = preparedStatement.executeUpdate();
 
@@ -276,6 +279,17 @@ public class UsuarioDAO {
         }
 
         return rowsAfected;
+
+    }
+
+    private String userSelect(String table) {
+        if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
+            return "INSERT INTO " + table + " (nombre, apellido,"
+                    + " nick, user_password, email, tienda_asignada) VALUES (?, ?, ?, ?, ?, ?)";
+        } else {
+            return "INSERT INTO " + table + " (nombre, apellido,"
+                    + " nick, user_password, email) VALUES (?, ?, ?, ?, ?)";
+        }
 
     }
 
