@@ -6,11 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import dataBase.UsuarioDAO;
-import dominio.Supervisor;
-import dominio.Bodeguero;
-import dominio.Dependiente;
-import dominio.Usuario;
+import dataBase.*;
+import dominio.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +16,6 @@ import java.util.ArrayList;
 public class FileManager {
 
     ObjectMapper objectMapper = new ObjectMapper();
-    UsuarioDAO usuarioDAO = new UsuarioDAO();
     InputStream fileContent;
     BufferedReader bufferedReader;
     JsonNode rootNode;
@@ -46,24 +42,22 @@ public class FileManager {
 
     }
 
-    private void initJasonRootNode(InputStream json) {
-
-        try {
-
-            this.rootNode = objectMapper.readTree(json);
-
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
     public int cargarDatos() throws IllegalArgumentException, JsonProcessingException {
         int rowsAffected = 0;
 
-        //administradores
+        cargarProductos();
+        cargarTiendas();
+        int usuariosCargados = cargarUsuarios();
+
+        return rowsAffected;
+    }
+
+    private int cargarUsuarios() {
+        int rowsAffected = 0;
+
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+        //supervisores
         ArrayList<Supervisor> supervisores = new ArrayList<>();
         JsonNode usuariosJsonNode = rootNode.get("supervisores");
 
@@ -91,7 +85,6 @@ public class FileManager {
 
             int codigo = dependienteNode.get("codigo").asInt();
             int tienda = dependienteNode.get("tienda").asInt();
-
             String nombre = dependienteNode.get("nombre").asText();
             String username = dependienteNode.get("username").asText();
             String password = dependienteNode.get("password").asText();
@@ -100,6 +93,7 @@ public class FileManager {
             dependientes.add(dependiente);
 
         }
+
         for (Dependiente dep : dependientes) {
 
             rowsAffected += usuarioDAO.insertUsuario(dep, "DEPENDIENTES");
@@ -131,6 +125,69 @@ public class FileManager {
         }
 
         return rowsAffected;
+    }
+
+    private int cargarTiendas() {
+
+        TiendaDAO tiendaDAO = new TiendaDAO();
+
+        int rowsAffected = 0;
+
+        ArrayList<Tienda> tiendas = new ArrayList<>();
+        JsonNode tiendasNode = rootNode.get("tiendas");
+
+        for (JsonNode tiendaNode : tiendasNode) {
+
+            int codigoTda = tiendaNode.get("codigo").asInt();
+            String direccion = tiendaNode.get("direccion").asText();
+            String tipo = tiendaNode.get("tipo").asText();
+            JsonNode productos = tiendaNode.get("productos");
+            Tienda tienda = new Tienda(codigoTda, direccion, tipo);
+            tienda.crearCatalogo();
+            for (JsonNode productosArray : productos) {
+                int codigoPdc = productosArray.get("codigo").asInt();
+                int existenciasPdc = productosArray.get("existencias").asInt();
+
+                Producto producto = new Producto(codigoPdc, existenciasPdc);
+                tienda.agregarAlCatalogo(producto);
+            }
+            tiendas.add(tienda);
+
+        }
+        for (Tienda td : tiendas) {
+
+            rowsAffected += tiendaDAO.insertarTienda(td);
+        }
+
+        return rowsAffected;
+    }
+
+    private int cargarProductos() {
+
+        int rows = 0;
+        ProductoDAO productoDAO = new ProductoDAO();
+
+        ArrayList<Producto> productos = new ArrayList<>();
+        JsonNode productoJsonNode = rootNode.get("productos");
+
+        for (JsonNode productoNode : productoJsonNode) {
+            int codigo = productoNode.get("codigo").asInt();
+            String nombre = productoNode.get("nombre").asText();
+            double costo = productoNode.get("costo").asDouble();
+            double precio = productoNode.get("precio").asDouble();
+            int existencia = productoNode.get("existencias").asInt();
+
+            Producto producto = new Producto(codigo, nombre, costo, precio, existencia);
+            productos.add(producto);
+
+        }
+
+        for (Producto producto : productos) {
+            rows = productoDAO.insertarProducto(producto);
+        }
+
+        return rows;
+
     }
 
 }
