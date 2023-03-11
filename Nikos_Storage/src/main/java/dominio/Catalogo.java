@@ -16,22 +16,24 @@ import lombok.ToString;
 @ToString
 public class Catalogo {
 
-    int codigo_tienda;
-    List<Producto> productos = new ArrayList<>();
+    private int codigoTienda;
+    private ArrayList<Producto> productos = new ArrayList<>();
 
     public Catalogo(int codigo_tienda) {
-        this.codigo_tienda = codigo_tienda;
+        this.codigoTienda = codigo_tienda;
     }
 
     public void agregarProducto(Producto producto) {
         this.productos.add(producto);
     }
 
-    public Producto getProductos() {
-        for (Producto producto : productos) {
-            return producto;
-        }
-        return null;
+    public ArrayList<Producto> getProductos() {
+        return productos;
     }
 
+    public void setProductos(ArrayList<Producto> productos) {
+        this.productos = productos;
+    }
+
+    
 }

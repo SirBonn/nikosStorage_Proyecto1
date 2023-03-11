@@ -18,7 +18,7 @@ public class Producto {
     private String nombre;
     private double precioCosto;
     private double precioVenta;
-    private int existencias;
+    private int cantidad;
 
     public Producto(int codigo) {
         this.codigo = codigo;
@@ -30,24 +30,33 @@ public class Producto {
         this.nombre = nombre;
         this.precioCosto = precioCosto;
         this.precioVenta = precioVenta;
-        this.existencias = existencias;
+        this.cantidad = existencias;
     }
 
-    public Producto(int codigo, int existencias) {
+    public Producto(int codigo, int cantidad) {
         this.codigo = codigo;
-        this.existencias = existencias;
+        this.cantidad = cantidad;
     }
-    
     
     
     public Producto(String nombre, double precioCosto, double precioVenta, int existencias) {
         this.nombre = nombre;
         this.precioCosto = precioCosto;
         this.precioVenta = precioVenta;
-        this.existencias = existencias;
+        this.cantidad = existencias;
     }
 
+    public Producto(int codigo, double precioVenta, int cantidad) {
+        this.codigo = codigo;
+        this.precioVenta = precioVenta;
+        this.cantidad = cantidad;
+    }
     
+    
+    
+    public double getTotal(){
+        return (this.cantidad * this.precioVenta);
+    }
     
     
 }

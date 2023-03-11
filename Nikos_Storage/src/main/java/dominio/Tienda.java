@@ -14,10 +14,10 @@ import lombok.ToString;
 public class Tienda {
 
     private int codigo_tienda;
-    private String nombre;
+    private String nombre = "";
     private String direccion;
     private String tipo;
-    private Catalogo catalogo;
+    private Catalogo catalogo; //refiere a la tabla que almacena muchos productos en muchas tiendas
 
     public Tienda() {
     }

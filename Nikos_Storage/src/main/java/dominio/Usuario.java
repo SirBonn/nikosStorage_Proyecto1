@@ -29,6 +29,12 @@ public class Usuario {
         this.codigo = codigo;
     }
 
+    public Usuario(String nombre, String username, String password) {
+        this.nombre = nombre;
+        this.username = username;
+        this.password = PasswordEncoder.encodePassword(password);
+    }
+
     public Usuario(String username, String password) {
         this.username = username;
         this.password = PasswordEncoder.encodePassword(password);
@@ -51,6 +57,13 @@ public class Usuario {
         this.username = username;
         this.password = PasswordEncoder.encodePassword(password);
         this.email = email;
+    }
+
+    public Usuario(int codigo, String nombre, String username, String password) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.username = username;
+        this.password = PasswordEncoder.encodePassword(password);
     }
 
     public Usuario(int codigo, String nombre, String username, String password, String email, int tiendaKey) {
