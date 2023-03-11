@@ -11,13 +11,12 @@
             <div >
                 <form class="" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/filesMagnamentServlet"> 
                     <div class="modal-body">
-                        <input type="file" class="form-control-file border" id="JSONfile" name="JSONfile">
+                        <input type="file" class="form-control-file border" id="JSONfile" name="JSONfile" required>
                     </div>
 
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="submit"> Cargar</button>
                     </div>
-
                 </form>
             </div>
         </div>
