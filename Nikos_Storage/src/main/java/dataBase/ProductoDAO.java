@@ -82,7 +82,7 @@ public class ProductoDAO {
             double venta = resultSet.getDouble("precio_venta_producto");
             producto.setPrecioVenta(venta);
             int existencia = resultSet.getInt("existencia_producto");
-            producto.setExistencias(existencia);
+            producto.setCantidad(existencia);
 
         } catch (SQLException e) {
 
@@ -116,7 +116,7 @@ public class ProductoDAO {
             preparedStatement.setString(2, producto.getNombre());
             preparedStatement.setDouble(3, producto.getPrecioCosto());
             preparedStatement.setDouble(4, producto.getPrecioVenta());
-            preparedStatement.setInt(5, producto.getExistencias());
+            preparedStatement.setInt(5, producto.getCantidad());
 
             rowAffected = preparedStatement.executeUpdate();
 
@@ -149,7 +149,7 @@ public class ProductoDAO {
             preparedStatement.setString(1, producto.getNombre());
             preparedStatement.setDouble(2, producto.getPrecioCosto());
             preparedStatement.setDouble(3, producto.getPrecioVenta());
-            preparedStatement.setInt(4, producto.getExistencias());
+            preparedStatement.setInt(4, producto.getCantidad());
             preparedStatement.setInt(5, producto.getCodigo());
 
             rowsAfected = preparedStatement.executeUpdate();

@@ -8,6 +8,8 @@ package dataBase;
 import dominio.Producto;
 import dominio.Tienda;
 import dataBase.ProductoDAO;
+import dominio.Catalogo;
+import dominio.ListadoProductos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,7 +44,7 @@ public class CatalogoDAO {
 
                 Producto producto = new Producto(resultSet.getInt("codigo_producto"));
                 producto = productoDAO.buscarProducto(producto);
-                producto.setExistencias(resultSet.getInt("existencia_producto"));
+                producto.setCantidad(resultSet.getInt("existencia_producto"));
 
                 productos.add(producto);
 
@@ -59,4 +61,41 @@ public class CatalogoDAO {
         return productos;
     }
 
+    
+    public int insertarCatalogo(Catalogo catalogo) {
+
+        final String SQL_INSERT = "INSERT INTO CATALOGO (codigo_tienda, codigo_producto, existencia_producto) "
+                + "VALUES (?, ?, ?)";
+
+        int rowAffected = 0;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_INSERT);
+            ArrayList<Producto> productos = catalogo.getProductos();
+           
+            for (Producto producto : productos) {
+
+                preparedStatement.setInt(1, catalogo.getCodigoTienda());
+                preparedStatement.setInt(2, producto.getCodigo());
+                preparedStatement.setInt(3, producto.getCantidad());
+                rowAffected = preparedStatement.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error al agregar un catalogo\n" + e);
+        } finally {
+
+            System.out.println("se agrego un catalogo correctamente");
+            DBConectionManager.close(connection);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return rowAffected;
+
+    }
+    
 }

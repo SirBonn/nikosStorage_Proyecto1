@@ -74,21 +74,23 @@ public class UsuarioDAO {
             preparedStatement.setInt(1, usuario.getCodigo());
 
             resultSet = preparedStatement.executeQuery();
-
-            String nombre = resultSet.getString("nombre");
-            usuario.setNombre(nombre);
-            String apellido = resultSet.getString("apellido");
-            usuario.setApellido(apellido);
-            String nick = resultSet.getString("nick");
-            usuario.setNickName(nick);
-            String password = resultSet.getString("user_password");
-            usuario.setPassword(password);
-            String email = resultSet.getString("email");
-            usuario.setEmail(email);
-            int lvlUsr = resultSet.getInt("nivel_usuario");
-            usuario.setLevelUsr(lvlUsr);
-            int tienda = resultSet.getInt("tienda_asignada");
-            usuario.setTiendaKey(tienda);
+            
+            while (resultSet.next()) {
+                String nombre = resultSet.getString("nombre");
+                usuario.setNombre(nombre);
+                String apellido = resultSet.getString("apellido");
+                usuario.setApellido(apellido);
+                String nick = resultSet.getString("nick");
+                usuario.setNickName(nick);
+                String password = resultSet.getString("user_password");
+                usuario.setPassword(password);
+                String email = resultSet.getString("email");
+                usuario.setEmail(email);
+                int lvlUsr = resultSet.getInt("nivel_usuario");
+                usuario.setLevelUsr(lvlUsr);
+                int tienda = resultSet.getInt("tienda_asignada");
+                usuario.setTiendaKey(tienda);
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -122,7 +124,7 @@ public class UsuarioDAO {
                 preparedStatement.setString(1, usuario.getNickName());
                 preparedStatement.setString(2, usuario.getPassword());
                 resultSet = preparedStatement.executeQuery();
-                
+
                 while (resultSet.next()) {
                     int codigo = resultSet.getInt("codigo");
                     usuario.setCodigo(codigo);

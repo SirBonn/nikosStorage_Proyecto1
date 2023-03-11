@@ -57,7 +57,7 @@ public class TiendaDAO {
 
     public Tienda buscarTienda(Tienda tienda) {
         final String SQL_SELECT_BY_ID = "SELECT codigo_tienda, nombre_tienda, direccion_tienda, tipo_tienda "
-                + "FROM TIENDAS WHERE=?";
+                + "FROM TIENDAS WHERE codigo_tienda = ?";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -68,12 +68,15 @@ public class TiendaDAO {
             preparedStatement.setInt(1, tienda.getCodigo_tienda());
 
             resultSet = preparedStatement.executeQuery();
-            String nombre = resultSet.getString("nombre");
-            tienda.setNombre(nombre);
-            String direccion = resultSet.getString("direccion_tienda");
-            tienda.setDireccion(direccion);
-            String tipo_tienda = resultSet.getString("tipo_tienda");
-            tienda.setTipo(tipo_tienda);
+
+            while (resultSet.next()) {
+                String nombre = resultSet.getString("nombre_tienda");
+                tienda.setNombre(nombre);
+                String direccion = resultSet.getString("direccion_tienda");
+                tienda.setDireccion(direccion);
+                String tipo_tienda = resultSet.getString("tipo_tienda");
+                tienda.setTipo(tipo_tienda);
+            }
 
         } catch (SQLException e) {
 
@@ -90,8 +93,6 @@ public class TiendaDAO {
         return tienda;
     }
 
-
-    
     public int insertarTienda(Tienda tienda) {
 
         final String SQL_INSERT = "INSERT INTO TIENDAS (codigo_tienda, nombre_tienda, direccion_tienda, tipo_tienda)"
@@ -109,7 +110,7 @@ public class TiendaDAO {
             preparedStatement.setString(2, tienda.getNombre());
             preparedStatement.setString(3, tienda.getDireccion());
             preparedStatement.setString(4, tienda.getTipo());
-            
+
             rowAffected = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -123,9 +124,9 @@ public class TiendaDAO {
         }
 
         return rowAffected;
-        
+
     }
-    
+
     public int actualizarTienda(Tienda tienda) {
         final String SQL_UPDATE = "UPDATE TIENDAS SET nombre_tienda=?, direccion_tienda=?, "
                 + "tipo_tienda=? WHERE codigo_tienda=?";
@@ -142,7 +143,7 @@ public class TiendaDAO {
             preparedStatement.setString(2, tienda.getDireccion());
             preparedStatement.setString(3, tienda.getTipo());
             preparedStatement.setInt(4, tienda.getCodigo_tienda());
-            
+
             rowsAfected = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -185,5 +186,5 @@ public class TiendaDAO {
         return rowsAfected;
 
     }
-    
+
 }
