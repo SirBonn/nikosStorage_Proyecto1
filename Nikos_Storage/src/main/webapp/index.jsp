@@ -4,6 +4,7 @@
         <title>Niko Storage</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">        
+
         <jsp:include page="WEB-INF/pages/commonPages/commonHead.jsp"/>
 
     </head>
