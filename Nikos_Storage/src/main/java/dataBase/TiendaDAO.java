@@ -12,12 +12,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
 /**
  *
  * @author sirbon
  */
+@Getter
 public class TiendaDAO {
+
+    private String informe = null;
 
     public List<Tienda> listarTiendas() {
 
@@ -36,7 +40,7 @@ public class TiendaDAO {
             while (resultSet.next()) {
 
                 int codigo = resultSet.getInt("codigo_tienda");
-                String nombre = resultSet.getString("nombre");
+                String nombre = resultSet.getString("nombre_tienda");
                 String direccion = resultSet.getString("direccion_tienda");
                 String tipo_tienda = resultSet.getString("tipo_tienda");
 
@@ -46,6 +50,8 @@ public class TiendaDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace(System.out);
+            this.informe = e.getMessage();
+
         } finally {
             DBConectionManager.close(connection);
             DBConectionManager.close(resultSet);
@@ -79,6 +85,7 @@ public class TiendaDAO {
             }
 
         } catch (SQLException e) {
+            this.informe = e.getMessage();
 
             e.printStackTrace(System.out);
 
@@ -116,6 +123,8 @@ public class TiendaDAO {
         } catch (SQLException e) {
             System.out.println("hubbo un error al agregar una tienda");
             e.printStackTrace(System.out);
+            this.informe = e.getMessage();
+
         } finally {
             System.out.println("se agrego una tienda exitosamente");
             DBConectionManager.close(connection);
@@ -148,6 +157,8 @@ public class TiendaDAO {
 
         } catch (SQLException e) {
             e.printStackTrace(System.out);
+            this.informe = e.getMessage();
+
         } finally {
 
             DBConectionManager.close(connection);
@@ -176,6 +187,8 @@ public class TiendaDAO {
 
         } catch (SQLException e) {
             e.printStackTrace(System.out);
+            this.informe = e.getMessage();
+
         } finally {
 
             DBConectionManager.close(connection);

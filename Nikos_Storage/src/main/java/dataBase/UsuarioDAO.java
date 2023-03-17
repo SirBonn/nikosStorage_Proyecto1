@@ -8,17 +8,20 @@ package dataBase;
 import java.util.*;
 import dominio.*;
 import java.sql.*;
+import lombok.Getter;
 
 /**
  *
  * @author sirbon
  */
+@Getter
 public class UsuarioDAO {
+
+    private String informe = null;
 
     public List<Usuario> listarUsuarios(String table) {
 
-        final String SQL_SELECT = "SELECT codigo_administrador, nombre_administrador, apellido_administrador, nick_administrador"
-                + "password_administsrador, email_administrador, nivel_usuario, tienda_asignada from " + table;
+        final String SQL_SELECT = userSelect(table, false);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -32,22 +35,29 @@ public class UsuarioDAO {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                int codigo = resultSet.getInt("codigo_administrador");
+                int codigo = resultSet.getInt("codigo");
                 String nombre = resultSet.getString("nombre");
                 String apellido = resultSet.getString("apellido");
                 String nick = resultSet.getString("nick");
                 String password = resultSet.getString("user_password");
                 String email = resultSet.getString("email");
                 int lvlUsr = resultSet.getInt("nivel_usuario");
-                int tienda = resultSet.getInt("tienda_asignada");
 
-                usuario = new Usuario(codigo, lvlUsr, nombre, apellido, nick, password, email, tienda);
-                usuarios.add(usuario);
+                if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
+                    int tienda = resultSet.getInt("tienda_asignada");
+                    usuario = new Usuario(codigo, lvlUsr, nombre, apellido, nick, password, email, tienda);
+                    usuarios.add(usuario);
+                } else {
+                    usuario = new Usuario(codigo, lvlUsr, nombre, apellido, nick, password, email);
+                    usuarios.add(usuario);
+                }
 
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
         } finally {
 
             DBConectionManager.close(connection);
@@ -61,8 +71,7 @@ public class UsuarioDAO {
 
     public Usuario buscarUsuario(Usuario usuario, String table) {
 
-        String SQL_SELECT_BY_ID = "SELECT codigo, nombre, apellido, "
-                + "nick, user_password, email, nivel_usuario, tienda_asignada from " + table + " WHERE codigo = ?";
+        String SQL_SELECT_BY_ID = userSelect(table, false) + " WHERE codigo = ?";
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -74,7 +83,7 @@ public class UsuarioDAO {
             preparedStatement.setInt(1, usuario.getCodigo());
 
             resultSet = preparedStatement.executeQuery();
-            
+
             while (resultSet.next()) {
                 String nombre = resultSet.getString("nombre");
                 usuario.setNombre(nombre);
@@ -88,12 +97,16 @@ public class UsuarioDAO {
                 usuario.setEmail(email);
                 int lvlUsr = resultSet.getInt("nivel_usuario");
                 usuario.setLevelUsr(lvlUsr);
-                int tienda = resultSet.getInt("tienda_asignada");
-                usuario.setTiendaKey(tienda);
+
+                if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
+                    int tienda = resultSet.getInt("tienda_asignada");
+                    usuario.setTienda(tienda);
+                }
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
         } finally {
 
             DBConectionManager.close(connection);
@@ -142,6 +155,8 @@ public class UsuarioDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
         } finally {
 
             DBConectionManager.close(connection);
@@ -155,7 +170,7 @@ public class UsuarioDAO {
 
     public int insertUsuario(Usuario usuario, String table) {
 
-        final String SQL_INSERT = userSelect(table);
+        final String SQL_INSERT = userSelect(table, true);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -171,7 +186,7 @@ public class UsuarioDAO {
             preparedStatement.setString(4, usuario.getPassword());
             preparedStatement.setString(5, usuario.getEmail());
             if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
-                preparedStatement.setInt(6, usuario.getTiendaKey());
+                preparedStatement.setInt(6, usuario.getTienda());
 
             }
 
@@ -180,6 +195,8 @@ public class UsuarioDAO {
         } catch (SQLException ex) {
             System.out.println("error al agregar un usuario");
             ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
         } finally {
             System.out.println("se agregro un usuario correctamente");
             DBConectionManager.close(connection);
@@ -224,8 +241,16 @@ public class UsuarioDAO {
     }
 
     public int actualizarUsuario(Usuario usuario, String table) {
-        final String SQL_UPDATE = "UPDATE " + table + " SET nombre=?, apellido=?, "
-                + "nick=? WHERE codigo=?";
+        String SQL_UPDATE;
+        boolean haveTienda = true;
+        if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
+            SQL_UPDATE = "UPDATE " + table + " SET nombre=?, apellido=?, email=?, nick=?, "
+                    + " tienda_asignada=? WHERE codigo=?";
+        } else {
+            SQL_UPDATE = "UPDATE " + table + " SET nombre=?, apellido=?, email=?,"
+                    + "nick=? WHERE codigo=?";
+            haveTienda = false;
+        }
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -237,8 +262,16 @@ public class UsuarioDAO {
 
             preparedStatement.setString(1, usuario.getNombre());
             preparedStatement.setString(2, usuario.getApellido());
-            preparedStatement.setString(3, usuario.getNickName());
-            preparedStatement.setInt(4, usuario.getCodigo());
+            preparedStatement.setString(3, usuario.getEmail());
+            preparedStatement.setString(4, usuario.getNickName());
+
+            if (haveTienda) {
+                preparedStatement.setInt(5, usuario.getTienda());
+                preparedStatement.setInt(6, usuario.getCodigo());
+            } else {
+                preparedStatement.setInt(5, usuario.getCodigo());
+
+            }
 
             rowsAfected = preparedStatement.executeUpdate();
 
@@ -256,7 +289,7 @@ public class UsuarioDAO {
 
     public int eliminarUsuario(Usuario usuario, String table) {
 
-        final String SQL_DELETE = "DELETE FROM " + table + " WHERE codigo_administrador=?";
+        final String SQL_DELETE = "DELETE FROM " + table + " WHERE codigo=?";
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -272,6 +305,8 @@ public class UsuarioDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
         } finally {
 
             DBConectionManager.close(connection);
@@ -283,13 +318,25 @@ public class UsuarioDAO {
 
     }
 
-    private String userSelect(String table) {
+    private String userSelect(String table, boolean isInsert) {
         if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
-            return "INSERT INTO " + table + " (nombre, apellido,"
-                    + " nick, user_password, email, tienda_asignada) VALUES (?, ?, ?, ?, ?, ?)";
+            if (isInsert) {
+                return "INSERT INTO " + table + " (nombre, apellido,"
+                        + " nick, user_password, email, tienda_asignada) VALUES (?, ?, ?, ?, ?, ?)";
+            } else {
+                return "SELECT codigo, nombre, apellido, "
+                        + "nick, user_password, email, nivel_usuario, tienda_asignada from " + table;
+            }
+
         } else {
-            return "INSERT INTO " + table + " (nombre, apellido,"
-                    + " nick, user_password, email) VALUES (?, ?, ?, ?, ?)";
+            if (isInsert) {
+                return "INSERT INTO " + table + " (nombre, apellido,"
+                        + " nick, user_password, email) VALUES (?, ?, ?, ?, ?)";
+            } else {
+
+                return "SELECT codigo, nombre, apellido, "
+                        + "nick, user_password, email, nivel_usuario from " + table;
+            }
         }
 
     }
