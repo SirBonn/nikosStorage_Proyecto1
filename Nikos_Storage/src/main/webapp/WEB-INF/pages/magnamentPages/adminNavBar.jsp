@@ -1,7 +1,6 @@
-<div class="header bg-primary text-light">
+<div class="header bg-primary text-light sticky-top">
     <h1 class="dispay bg-primary">NIKOS ADMINISTRATIVE</h1>
-
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark ">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.jsp">
                 <img src="resources/Visual/Infografias NS.png" height="23" width="42">
@@ -14,14 +13,14 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Usuarios</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Agregar</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#agregarUsuario">Agregar</a></li>
                             <li><a class="dropdown-item" href="#">Editar</a></li>
                             <li><a class="dropdown-item" href="#">Eliminar</a></li>
                         </ul>
                     </li><li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Tiendas</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Tiendas</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Agregar</a></li>
+                             <li><a class="dropdown-item" data-toggle="modal" data-target="#agregarTienda">Agregar</a></li>
                             <li><a class="dropdown-item" href="#">Editar</a></li>
                             <li><a class="dropdown-item" href="#">Eliminar</a></li>
                         </ul>
@@ -49,4 +48,4 @@
     </nav>
 </div>
 
-<jsp:include page="../magnamentPages/manejo-archivos.jsp"/>
+<jsp:include page="../magnamentPages/manejo-controlador.jsp"/>
