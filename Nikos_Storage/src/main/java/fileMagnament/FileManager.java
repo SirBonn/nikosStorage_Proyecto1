@@ -13,14 +13,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+
 public class FileManager {
 
-    ObjectMapper objectMapper = new ObjectMapper();
-    InputStream fileContent;
-    BufferedReader bufferedReader;
-    JsonNode rootNode;
-    String json;
-
+    private ObjectMapper objectMapper = new ObjectMapper();
+    private InputStream fileContent;
+    private BufferedReader bufferedReader;
+    private JsonNode rootNode;
+    private String json;
+    public static String informe = "";
+    
     public FileManager(String fileContent, BufferedReader bufferedReader) {
         this.bufferedReader = bufferedReader;
         this.json = fileContent;
@@ -47,13 +49,13 @@ public class FileManager {
     public int cargarDatos() throws IllegalArgumentException, JsonProcessingException {
         int rowsAffected = 0;
 
-        cargarProductos();
-        cargarTiendas();
-        cargarUsuarios();
-        cargarPedidos();
-        cargarEnvios();
-        cargarDevoluciones();
-        cargarIncidencias();
+        rowsAffected += cargarProductos();
+        rowsAffected += cargarTiendas();
+        rowsAffected += cargarUsuarios();
+        rowsAffected += cargarPedidos();
+        rowsAffected += cargarEnvios();
+        rowsAffected += cargarDevoluciones();
+        rowsAffected += cargarIncidencias();
         return rowsAffected;
     }
 
