@@ -32,27 +32,29 @@ public class loginServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         boolean isLogged = isLogged(nick, pasword);
-        
+
         if (isLogged && loggedUsuario.getLevelUsr() == 0) {
 
-            response.sendRedirect("gestion-administrativa.jsp");
             session.setAttribute(nick, loggedUsuario.getPassword());
+            response.sendRedirect("gestion-administrativa.jsp");
 
         } else if (isLogged && loggedUsuario.getLevelUsr() == 1) {
-            response.sendRedirect("gestion-tienda.jsp");
             session.setAttribute(nick, loggedUsuario.getPassword());
+            response.sendRedirect("gestion-tienda.jsp");
 
         } else if (isLogged && loggedUsuario.getLevelUsr() == 2) {
-            response.sendRedirect("gestion-bodega.jsp");
             session.setAttribute(nick, loggedUsuario.getPassword());
+            response.sendRedirect("gestion-bodega.jsp");
 
         } else if (isLogged && loggedUsuario.getLevelUsr() == 3) {
-            response.sendRedirect("gestion-supervisora.jsp");
             session.setAttribute(nick, loggedUsuario.getPassword());
+            response.sendRedirect("gestion-supervisora.jsp");
 
         } else {
             request.setAttribute("error", "Usuario o contraseña incorrectos");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            //response.sendRedirect("login.jsp");
+
         }
 
     }
