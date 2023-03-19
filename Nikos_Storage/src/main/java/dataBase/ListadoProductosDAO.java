@@ -8,8 +8,10 @@ package dataBase;
 import dominio.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,6 +24,7 @@ public class ListadoProductosDAO {
         final String SQL_INSERT = "INSERT INTO LISTADO_PRODUCTOS  (codigo_pedido, codigo_producto, cantidad, "
                 + "precio_costo, precio_total) VALUES (?, ?, ?, ?, ?)";
 
+        CatalogoDAO catalogoDAO = new CatalogoDAO();
         int rowAffected = 0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -29,16 +32,17 @@ public class ListadoProductosDAO {
         try {
             connection = DBConectionManager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT);
-            ArrayList<Producto> productos = lIstadoProductos.getListadoProductos();
-           
-            for (Producto producto : productos) {
+            List<Producto> productos = lIstadoProductos.getListadoProductos();
 
+            for (Producto producto : productos) {
+                
                 preparedStatement.setInt(1, lIstadoProductos.getCodigoListado());
                 preparedStatement.setInt(2, producto.getCodigo());
                 preparedStatement.setInt(3, producto.getCantidad());
                 preparedStatement.setDouble(4, producto.getPrecioVenta());
                 preparedStatement.setDouble(5, producto.getTotal());
                 rowAffected = preparedStatement.executeUpdate();
+                
             }
 
         } catch (SQLException e) {
@@ -54,4 +58,48 @@ public class ListadoProductosDAO {
         return rowAffected;
 
     }
+    
+    public List<Producto> listarProductos(Pedido pedido) {
+
+        final String SQL_SELECT = "SELECT codigo_producto, cantidad, "
+                + "precio_costo, precio_total FROM LISTADO_PRODUCTOS WHERE codigo_pedido=?";
+
+        List<Producto> productos = new ArrayList<>();
+        Producto producto;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            preparedStatement.setInt(1, pedido.getCodigoPedido());
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigoProducto = resultSet.getInt("codigo_producto");
+                int cantidadProducto = resultSet.getInt("cantidad");
+                double costo = resultSet.getDouble("precio_costo"); //precio del producto
+                double precio = resultSet.getDouble("precio_total"); //precio del producto * cantidad de productos
+
+                producto = new Producto(codigoProducto, costo, cantidadProducto);
+                productos.add(producto);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return productos;
+    }
+    
 }

@@ -7,9 +7,7 @@ package dataBase;
 
 import dominio.Producto;
 import dominio.Tienda;
-import dataBase.ProductoDAO;
 import dominio.Catalogo;
-import dominio.ListadoProductos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,12 +21,12 @@ import java.util.List;
  */
 public class CatalogoDAO {
 
-    ProductoDAO productoDAO = new ProductoDAO();
+    private ProductoDAO productoDAO = new ProductoDAO();
 
     public List<Producto> listarCatalogo(Tienda tienda) {
 
-        final String SQL_SELECT = "SELECT codigo_producto, existencia_producto,  FROM "
-                + "CATALOGO WHERE codigo_tienda=?";
+        final String SQL_SELECT = "SELECT codigo_producto, existencia_producto FROM CATALOGO WHERE"
+                + " codigo_tienda =?";
         List<Producto> productos = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -61,7 +59,6 @@ public class CatalogoDAO {
         return productos;
     }
 
-    
     public int insertarCatalogo(Catalogo catalogo) {
 
         final String SQL_INSERT = "INSERT INTO CATALOGO (codigo_tienda, codigo_producto, existencia_producto) "
@@ -75,7 +72,7 @@ public class CatalogoDAO {
             connection = DBConectionManager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT);
             ArrayList<Producto> productos = catalogo.getProductos();
-           
+
             for (Producto producto : productos) {
 
                 preparedStatement.setInt(1, catalogo.getCodigoTienda());
@@ -97,5 +94,72 @@ public class CatalogoDAO {
         return rowAffected;
 
     }
-    
+
+    public int actualizarProducto(int tienda, List<Producto> productos) {
+        final String SQL_UPDATE = "UPDATE CATALOGO SET "
+                + "existencia_producto = ? WHERE codigo_tienda=? && codigo_producto=?";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        int rowsAfected = 0;
+
+        try {
+
+            for (Producto producto : productos) {
+                connection = DBConectionManager.getConnection();
+                preparedStatement = connection.prepareStatement(SQL_UPDATE);
+                int nuevaCantidad = producto.getCantidad();
+                Producto productoCat = buscarProducto(producto, tienda);
+                producto.setCantidad(productoCat.getCantidad() - nuevaCantidad);
+
+                preparedStatement.setInt(1, producto.getCantidad());
+                preparedStatement.setInt(2, tienda);
+                preparedStatement.setInt(3, producto.getCodigo());
+
+                rowsAfected = preparedStatement.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return rowsAfected;
+    }
+
+    public Producto buscarProducto(Producto producto, int tienda) {
+        final String SQL_SELECT_BY_ID = "SELECT existencia_producto FROM CATALOGO WHERE codigo_tienda=? && codigo_producto=?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT_BY_ID);
+            preparedStatement.setInt(1, tienda);
+            preparedStatement.setInt(2, producto.getCodigo());
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int existencia = resultSet.getInt("existencia_producto");
+                producto.setCantidad(existencia);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return producto;
+    }
+
 }

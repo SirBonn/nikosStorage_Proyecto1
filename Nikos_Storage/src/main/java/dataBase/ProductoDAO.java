@@ -12,13 +12,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
 /**
  *
  * @author sirbon
  */
+@Getter
 public class ProductoDAO {
 
+    private String informe ="";
+    
     public List<Producto> listarProductos() {
 
         final String SQL_SELECT = "SELECT codigo_producto, nombre_producto, precio_costo_producto, "
@@ -62,8 +66,7 @@ public class ProductoDAO {
     }
 
     public Producto buscarProducto(Producto producto) {
-        final String SQL_SELECT_BY_ID = "SELECT codigo_producto, nombre_producto, precio_costo_producto, "
-                + "precio_venta_producto, existencia_producto FROM PRODUCTOS WHERE=?";
+        final String SQL_SELECT_BY_ID = "SELECT nombre_producto, precio_costo_producto, precio_venta_producto, existencia_producto FROM PRODUCTOS WHERE codigo_producto=?";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -75,17 +78,21 @@ public class ProductoDAO {
 
             resultSet = preparedStatement.executeQuery();
 
-            String nombre = resultSet.getString("nombre_producto");
-            producto.setNombre(nombre);
-            double costo = resultSet.getDouble("precio_costo_producto");
-            producto.setPrecioCosto(costo);
-            double venta = resultSet.getDouble("precio_venta_producto");
-            producto.setPrecioVenta(venta);
-            int existencia = resultSet.getInt("existencia_producto");
-            producto.setCantidad(existencia);
+            while (resultSet.next()) {
+                
+                String nombre = resultSet.getString("nombre_producto");
+                producto.setNombre(nombre);
+                double costo = resultSet.getDouble("precio_costo_producto");
+                producto.setPrecioCosto(costo);
+                double venta = resultSet.getDouble("precio_venta_producto");
+                producto.setPrecioVenta(venta);
+                int existencia = resultSet.getInt("existencia_producto");
+                producto.setCantidad(existencia);
+                
+            }
 
         } catch (SQLException e) {
-
+            this.informe += e +"\n";
             e.printStackTrace(System.out);
 
         } finally {
@@ -130,7 +137,6 @@ public class ProductoDAO {
 
         }
 
-        
         return rowAffected;
 
     }
@@ -166,7 +172,7 @@ public class ProductoDAO {
 
         return rowsAfected;
     }
-    
+
     public int eliminarProducto(Producto producto) {
 
         final String SQL_DELETE = "DELETE FROM PRODUCTOS WHERE codigo_producto=?";

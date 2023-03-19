@@ -132,7 +132,7 @@ public class UsuarioDAO {
 
             for (String table : tables) {
 
-                String SQL_SELECT_BY_NAME = "SELECT * FROM " + table + " WHERE nick = ? AND user_password=?";
+                String SQL_SELECT_BY_NAME = userSelect(table, false) + " WHERE nick = ? AND user_password=?";
                 preparedStatement = connection.prepareStatement(SQL_SELECT_BY_NAME);
                 preparedStatement.setString(1, usuario.getNickName());
                 preparedStatement.setString(2, usuario.getPassword());
@@ -145,10 +145,20 @@ public class UsuarioDAO {
                     usuario.setNombre(nombre);
                     String apellido = resultSet.getString("apellido");
                     usuario.setApellido(apellido);
+                    String nick = resultSet.getString("nick");
+                    usuario.setNickName(nick);
+                    String password = resultSet.getString("user_password");
+                    usuario.setPassword(password);
                     String email = resultSet.getString("email");
                     usuario.setEmail(email);
                     int lvlUsr = resultSet.getInt("nivel_usuario");
                     usuario.setLevelUsr(lvlUsr);
+
+                    if (table.equals("DEPENDIENTES") || table.equals("BODEGUEROS")) {
+                        int tienda = resultSet.getInt("tienda_asignada");
+                        usuario.setTienda(tienda);
+                    }
+
                 }
 
             }
