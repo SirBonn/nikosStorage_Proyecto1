@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-
+<%--Carga de archivos -Modal--%>
 <div class="modal fade" id="importarArchivo" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -25,6 +25,7 @@
     </div>
 </div>
 
+<%--Carga agregar usuarios -Modal--%>
 <div class="modal fade" id="agregarUsuario" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -82,9 +83,9 @@
                                         <option>Selecciona</option>
                                         <c:forEach var="tienda" items="${tiendas}">
                                             <tr>
-                                            <option value ="${tienda.codigo_tienda}">${tienda.codigo_tienda}</option>
-                                            </tr>
-                                        </c:forEach>
+                                            <option value ="${tienda.codigo_tienda}">${tienda.codigo_tienda}</option> 
+                                        </tr>
+                                    </c:forEach>
                                     </select>
                                 </div>
                             </div>
@@ -95,7 +96,7 @@
                                 <button class="btn btn-primary" type="submit"> Agregar </button>
                             </c:if>
                             <c:if test="${passwordConfirm != password}">
-                                 <label class="text-danger">Verifica confirma la contraseña</label>
+                                <label class="text-danger">Verifica confirma la contraseña</label>
                                 <button class="btn btn-danger" disabled type="submit"> Agregar </button>    
                             </c:if>
 
@@ -107,6 +108,7 @@
     </div>
 </div>
 
+<%--Agregar tiendas -Modal--%>
 <div class="modal fade" id="agregarTienda" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -139,6 +141,23 @@
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--Reporte tiendas -Modal--%>
+<div class="modal fade" id="reporteTiendas" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-tittle">Importar archivo</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
             </div>
         </div>
     </div>

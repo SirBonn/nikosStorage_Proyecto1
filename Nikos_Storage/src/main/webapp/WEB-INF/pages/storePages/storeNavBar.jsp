@@ -1,8 +1,13 @@
-<div class="header bg-primary text-light sticky-top">
-    <h1 class="dispay bg-primary">NIKOS ADMINISTRATIVE</h1>
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark ">
+<div class="container-fluid bg-warning text-dark sticky-top ">
+    <div class="container-fluid">
+        <div class="row">
+            <h1 class="bg-warning">Tienda ${tienda.nombre}</h1>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-sm bg-warning navbar-dark ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="">
+            <a class="navbar-brand" href="#">
                 <img src="resources/Visual/Infografias NS.png" height="23" width="42">
             </a> <!-- logo en pequenha escala -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -12,15 +17,15 @@
                 <ul class="navbar-nav">
                     <!--Agregar usuario -->
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#agregarUsuario">Agregar Usuario</a>
+                        <a class="nav-link text-dark" data-toggle="modal" data-target="#insertarPedido">Agregar Pedido</a>
                     </li>
                     <!-- agregar tienda -->
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="modal" data-target="#agregarTienda">Agregar Tienda</a>
+                        <a class="nav-link text-dark" data-toggle="modal" data-target="#insertarProducto">Agregar Producto</a>
                     </li> 
                     <!-- apartado de reportes -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Reportes</a>
+                        <a class="nav-link dropdown-toggle  text-dark" href="#" id="navbardrop" data-toggle="dropdown">Reportes</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Tiendas con mas pedidos</a></li>
                             <li><a class="dropdown-item" href="#">Usuarios con mas envios</a></li>
@@ -31,21 +36,14 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Archivos</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" data-toggle="modal" data-target="#importarArchivo">Importar</a></li>
-
-                            <li><a class="dropdown-item" href="#">Exportar</a></li>
-                        </ul>
-                    </li>
                     <li class="nav-item">
                         <span>
-                            <a href="${pageContext.request.contextPath}/ManageControlServlet?accion=cerrarSesion"
-                               class="btn btn-secondary" >
+                            <a href="${pageContext.request.contextPath}/storeControlServlet?accion=cerrarSesion"
+                                class="btn btn-secondary" >
                                 Cerrar sesion</a>
                         </span>
                     </li>
+
                 </ul>
             </div>
             <hr>
@@ -54,4 +52,4 @@
     </nav>
 </div>
 
-<jsp:include page="../magnamentPages/manejo-controlador.jsp"/>
+<jsp:include page="../storePages/store-controlador.jsp"/>
