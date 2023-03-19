@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -49,7 +50,9 @@ public class ManageControlServlet extends HttpServlet {
                 case "eliminarTienda":
                     this.eliminarTienda(req, resp);
                     break;
-
+                case "cerrarSesion":
+                    this.cerrarSesion(req, resp);
+                    break;
             }
 
         } else {
@@ -316,5 +319,14 @@ public class ManageControlServlet extends HttpServlet {
 
         }
     }
-    
+
+    private void cerrarSesion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        getServletContext().setAttribute("Error", null);
+        getServletContext().setAttribute("Exito", null);
+        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+    }
 }

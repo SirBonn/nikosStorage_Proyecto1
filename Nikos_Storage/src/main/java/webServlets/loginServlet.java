@@ -35,12 +35,13 @@ public class loginServlet extends HttpServlet {
 
         if (isLogged && loggedUsuario.getLevelUsr() == 0) {
 
-            session.setAttribute(nick, loggedUsuario.getPassword());
+            session.setAttribute("administrador", loggedUsuario);
             response.sendRedirect("gestion-administrativa.jsp");
 
         } else if (isLogged && loggedUsuario.getLevelUsr() == 1) {
-            session.setAttribute(nick, loggedUsuario.getPassword());
-            response.sendRedirect("gestion-tienda.jsp");
+            session.setAttribute("dependiente", loggedUsuario);
+            //response.sendRedirect("gestion-tienda.jsp");
+            request.getRequestDispatcher("gestion-tienda.jsp").forward(request, response);
 
         } else if (isLogged && loggedUsuario.getLevelUsr() == 2) {
             session.setAttribute(nick, loggedUsuario.getPassword());

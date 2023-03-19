@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-
 public class FileManager {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -22,7 +21,7 @@ public class FileManager {
     private JsonNode rootNode;
     private String json;
     public static String informe = "";
-    
+
     public FileManager(String fileContent, BufferedReader bufferedReader) {
         this.bufferedReader = bufferedReader;
         this.json = fileContent;
@@ -229,14 +228,16 @@ public class FileManager {
         for (JsonNode pedidoNode : pedidosNode) {
 
             int codigo = pedidoNode.get("id").asInt();
-            //int tienda = pedidoNode.get("tienda").asInt();
+            int tiendaCodigo = pedidoNode.get("tienda").asInt();
             int usuario = pedidoNode.get("usuario").asInt();
             Usuario usuarioSol = new Usuario(usuario);
             usuarioSol = usuarioDAO.buscarUsuario(usuarioSol, "DEPENDIENTES");
+            Tienda tienda = new Tienda(tiendaCodigo);
+            tienda = new TiendaDAO().buscarTienda(tienda);
             String fecha = pedidoNode.get("fecha").asText();
             double total = pedidoNode.get("total").asDouble();
             String estado = pedidoNode.get("estado").asText();
-            Pedido pedido = new Pedido(codigo, fecha, total, estado, usuarioSol);
+            Pedido pedido = new Pedido(codigo, fecha, total, estado, usuarioSol, tienda);
             pedido.crearLista();
             JsonNode listadoProductosNode = pedidoNode.get("productos");
 
@@ -277,14 +278,15 @@ public class FileManager {
 
             int codigo = envioNode.get("id").asInt();
             int tienda = envioNode.get("tienda").asInt();
-            //int usuario = envioNode.get("usuario").asInt();
+            int pedidoCodigo = envioNode.get("pedido").asInt();
+            Pedido pedido = new PedidoDAO().buscarPedido(new Pedido(pedidoCodigo));
             Tienda tiendaDest = new Tienda(tienda);
             tiendaDest = tiendaDAO.buscarTienda(tiendaDest);
             String fechaSalida = envioNode.get("fechaSalida").asText();
             String fechaRecibido = envioNode.get("fechaRecibido").asText();
             double total = envioNode.get("total").asDouble();
             String estado = envioNode.get("estado").asText();
-            Envio envio = new Envio(codigo, fechaSalida, fechaRecibido, estado, total, tienda, tiendaDest);
+            Envio envio = new Envio(codigo, fechaSalida, fechaRecibido, estado, total, pedido, tiendaDest);
             envio.crearLista();
             JsonNode listadoProductosNode = envioNode.get("productos");
 
@@ -294,7 +296,7 @@ public class FileManager {
                 int cantidad = productoNode.get("cantidad").asInt();
                 double precioTotal = productoNode.get("costoTotal").asDouble();
 
-                envio.agregarAlListado(new Producto(codigoPd, precio, cantidad));
+                //envio.agregarAlListado(new Producto(codigoPd, precio, cantidad));
 
             }
 
@@ -327,11 +329,12 @@ public class FileManager {
             int usuario = devolucionNode.get("usuario").asInt();
             Usuario encargado = new Usuario(usuario);
             encargado = usuarioDAO.buscarUsuario(encargado, "BODEGUEROS");
-
+            int envioCod = devolucionNode.get("envio").asInt();
+            Envio envio = new EnvioDAO().buscarEnvio(new Envio(envioCod));
             String fecha = devolucionNode.get("fecha").asText();
             double total = devolucionNode.get("total").asDouble();
             String estado = devolucionNode.get("estado").asText();
-            Devolucion devolucion = new Devolucion(codigo, fecha, estado, total, encargado);
+            Devolucion devolucion = new Devolucion(codigo, fecha, estado, total, envio, encargado);
             JsonNode listadoProductosNode = devolucionNode.get("productos");
             devolucion.crearReclamo();
             for (JsonNode productoNode : listadoProductosNode) {
@@ -375,11 +378,12 @@ public class FileManager {
             int usuario = incidenciaNode.get("usuario").asInt();
             Usuario encargado = new Usuario(usuario);
             encargado = usuarioDAO.buscarUsuario(encargado, "BODEGUEROS");
-
+            int envioCod = incidenciaNode.get("envio").asInt();
+            Envio envio = new EnvioDAO().buscarEnvio(new Envio(envioCod));
             String fechaSalida = incidenciaNode.get("fecha").asText();
             String estado = incidenciaNode.get("estado").asText();
             String solucion = incidenciaNode.get("solucion").asText();
-            Incidencia incidencia = new Incidencia(codigo, fechaSalida, estado, encargado);
+            Incidencia incidencia = new Incidencia(codigo, fechaSalida, estado, encargado, envio);
             JsonNode listadoProductosNode = incidenciaNode.get("productos");
             incidencia.setSolucion(solucion);
             incidencia.crearReclamo();
