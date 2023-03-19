@@ -12,6 +12,6 @@
         <jsp:include page="../storePages/storeNavBar.jsp"/>
         <jsp:include page="../storePages/listasStore.jsp"/>
 
+        
     </body>
-
 </html>

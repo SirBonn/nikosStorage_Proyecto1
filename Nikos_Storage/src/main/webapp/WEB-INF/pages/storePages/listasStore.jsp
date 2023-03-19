@@ -267,11 +267,11 @@
                 </table>
 
                 <div class="btn-group btn-group-sm">
-                    <a href="${pageContext.request.contextPath}/storeControlServlet?accion="
+                    <a href="${pageContext.request.contextPath}/storeControlServlet?accion=reportarIncidencia"
                        type="btn btn-secondary" class="btn btn-secondary">Reportar Incidencia</a>
-                    <a href="${pageContext.request.contextPath}/storeControlServlet?accion="
+                    <a href="${pageContext.request.contextPath}/storeControlServlet?accion=recibirProducto"
                        type="btn btn-secondary" class="btn btn-secondary">Marcar como recibido</a>
-                    <a href="${pageContext.request.contextPath}/storeControlServlet?accion="
+                    <a href="${pageContext.request.contextPath}/storeControlServlet?accion=crearDevolucion"
                        type="btn btn-secondary" class="btn btn-secondary">Devolver productos</a>
                 </div>
 

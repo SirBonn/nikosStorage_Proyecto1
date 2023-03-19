@@ -17,7 +17,7 @@
                 <ul class="navbar-nav">
                     <!--Agregar usuario -->
                     <li class="nav-item">
-                        <a class="nav-link text-dark" data-toggle="modal" data-target="#insertarPedido">Agregar Pedido</a>
+                        <a class="nav-link text-dark" data-toggle="modal" data-target="#">Agregar Pedido</a>
                     </li>
                     <!-- agregar tienda -->
                     <li class="nav-item">
