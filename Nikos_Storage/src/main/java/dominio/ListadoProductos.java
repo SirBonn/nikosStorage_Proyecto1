@@ -6,6 +6,7 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,7 +21,7 @@ import lombok.ToString;
 public class ListadoProductos {
 
     private int codigoListado; //referencia al codigo de envio
-    private ArrayList<Producto> listadoProductos= new ArrayList<>();
+    private List<Producto> listadoProductos= new ArrayList<>();
 
     public ListadoProductos() {
     }

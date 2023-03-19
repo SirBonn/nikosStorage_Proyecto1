@@ -5,6 +5,7 @@
  */
 package dominio;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,11 +19,11 @@ import lombok.ToString;
 public class Envio {
 
     private int codigoEnvio;
-    private LocalDate fechaEnvio;
-    private LocalDate fechaRecepcion;
+    private Date fechaEnvio;
+    private Date fechaRecepcion;
     private String estado;
     private double totalEnvio; //total del envio
-    private int productosEnviados; //cantidad de productos enviados
+    private Pedido pedidoEnviado; //referencia al pedido enviado
     private Tienda tiendaDestino;
     private ListadoProductos listadoEnvio;
 
@@ -34,45 +35,51 @@ public class Envio {
     }
 
     public Envio(int codigoEnvio, String fechaEnvio, String fechaRecepcion, String estado, double precioEnvio,
-            int productosEnviados, Tienda tiendaDestino) {
+            Pedido productosEnviados, Tienda tiendaDestino) {
         this.codigoEnvio = codigoEnvio;
         this.fechaEnvio = setLocalDate(fechaEnvio);
         this.fechaRecepcion = setLocalDate(fechaRecepcion);
         this.estado = estado;
         this.totalEnvio = precioEnvio;
-        this.productosEnviados = productosEnviados;
+        this.pedidoEnviado = productosEnviados;
         this.tiendaDestino = tiendaDestino;
     }
 
-    public LocalDate setLocalDate(String fecha) {
-        LocalDate fechaLD = null;
+    public Date setLocalDate(String fecha) {
+        Date fechaDate = null;
         try {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            fechaLD = LocalDate.parse(fecha, dateTimeFormatter);
+            if (fecha != null) {
+
+                LocalDate fechaLD = LocalDate.parse(fecha);
+                fechaDate = Date.valueOf(fechaLD);
+            }
 
         } catch (Exception e) {
             System.out.println("no se pudo parsear la fecha" + fecha + " por " + e);
+            e.printStackTrace(System.out);
         }
 
-        return fechaLD;
+        return fechaDate;
     }
 
-    public Timestamp getTimestampEnvio() {
-        Timestamp timestamp = null;
-        if (fechaEnvio != null) {
-            timestamp = Timestamp.valueOf(this.fechaEnvio.atStartOfDay());
+    public String getDateEnvio() {
 
-        }
-        return timestamp;
+        LocalDate localDate = this.fechaEnvio.toLocalDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fechaStr = localDate.format(formatter);
+
+        return fechaStr;
     }
 
-    public Timestamp getTimestampRecepcion() {
-        Timestamp timestamp = null;
-        if (fechaRecepcion != null) {
-            timestamp = Timestamp.valueOf(this.fechaRecepcion.atStartOfDay());
-        }
+    public String getDateRecepcion() {
+        String fechaStr = null;
+        if (this.fechaRecepcion != null) {
+            LocalDate localDate = this.fechaRecepcion.toLocalDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+             fechaStr = localDate.format(formatter);
+        } 
 
-        return timestamp;
+        return fechaStr;
     }
 
     public int getTiendaDestino() {

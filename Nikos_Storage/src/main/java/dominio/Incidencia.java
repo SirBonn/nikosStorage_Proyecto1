@@ -5,6 +5,7 @@
  */
 package dominio;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,13 +24,13 @@ import lombok.ToString;
 public class Incidencia {
 
     private int codigo;
-    private LocalDate fechaIncidencia;
+    private Date fechaIncidencia;
     private String estadoIncidencia;
     private Usuario encargado;
-    private int envioDevuelto; //referencia codigo envio
+    private Envio envioDevuelto; //referencia codigo envio
     private ReclamoIncidencia reclamoIncidencia;
     private String solucion;
-    
+
     public Incidencia() {
     }
 
@@ -44,26 +45,36 @@ public class Incidencia {
         this.encargado = encargado;
     }
 
-    public LocalDate setLocalDate(String fecha) {
-        LocalDate fechaLD = null;
+    public Incidencia(int codigo, String fechaIncidencia, String estadoIncidencia, Usuario encargado, Envio envioDevuelto) {
+        this.codigo = codigo;
+        this.fechaIncidencia = setLocalDate(fechaIncidencia);
+        this.estadoIncidencia = estadoIncidencia;
+        this.encargado = encargado;
+        this.envioDevuelto = envioDevuelto;
+    }
+
+    public Date setLocalDate(String fecha) {
+        Date fechaDate = null;
         try {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            fechaLD = LocalDate.parse(fecha, dateTimeFormatter);
+
+            LocalDate fechaLD = LocalDate.parse(fecha);
+            fechaDate = Date.valueOf(fechaLD);
 
         } catch (Exception e) {
             System.out.println("no se pudo parsear la fecha" + fecha + " por " + e);
+            e.printStackTrace(System.out);
         }
 
-        return fechaLD;
+        return fechaDate;
     }
 
-    public Timestamp getTimestampDevolucion() {
-        Timestamp timestamp = null;
-        if (fechaIncidencia != null) {
-            timestamp = Timestamp.valueOf(this.fechaIncidencia.atStartOfDay());
-        }
-
-        return timestamp;
+    public String getDateIncidencia() {
+       
+        LocalDate localDate = this.fechaIncidencia.toLocalDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fechaStr = localDate.format(formatter);
+        
+        return fechaStr;
     }
 
     public int getEncargado() {

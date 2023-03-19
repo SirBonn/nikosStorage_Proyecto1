@@ -87,13 +87,12 @@ public class Usuario {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
-        this.password = password;
+        this.password = PasswordEncoder.encodePassword(password);
         this.email = email;
         this.tienda = tienda;
     }
 
-    
-  public Usuario(int codigo, int levelUsr, String nombre, String apellido, String username, String password, String email) {
+    public Usuario(int codigo, int levelUsr, String nombre, String apellido, String username, String password, String email) {
         this.codigo = codigo;
         this.nivelAcceso = levelUsr;
         this.nombre = nombre;
@@ -103,12 +102,10 @@ public class Usuario {
         this.email = email;
     }
 
-    
-    
     public int getCodigo() {
         return codigo;
     }
-    
+
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }

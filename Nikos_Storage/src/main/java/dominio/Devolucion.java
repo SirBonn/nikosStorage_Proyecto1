@@ -27,7 +27,7 @@ public class Devolucion {
     private String estadoDevolucion;
     private double totalDevuelto;
     private Usuario encargado;
-    private int envioDevuelto; //referencia codigo envio
+    private Envio envioDevuelto; //referencia codigo envio
     private ReclamoDevolucion reclamoDevolucion;
     
     public Devolucion() {
@@ -37,7 +37,7 @@ public class Devolucion {
         this.codigoDevolucion = codigoDevolucion;
     }
 
-    public Devolucion(int codigoDevolucion, String fechaDevolucion, String estadoDevolucion, double totalDevuelto, int envioDevuelto, Usuario encargado) {
+    public Devolucion(int codigoDevolucion, String fechaDevolucion, String estadoDevolucion, double totalDevuelto, Envio envioDevuelto, Usuario encargado) {
         this.codigoDevolucion = codigoDevolucion;
         this.fechaDevolucion = setLocalDate(fechaDevolucion);
         this.estadoDevolucion = estadoDevolucion;
