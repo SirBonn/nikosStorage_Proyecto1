@@ -402,7 +402,7 @@ public class FileManager {
         for (Incidencia incidencia : incidencias) {
 
             rowsAffected += incidenciasDAO.insertarIncidencia(incidencia);
-            rowsAffected += reclamoIncidenciaDAO.incertarReclamo(incidencia.getReclamoIncidencia());
+            rowsAffected += reclamoIncidenciaDAO.insertarReclamo(incidencia.getReclamoIncidencia());
         }
 
         return rowsAffected;
