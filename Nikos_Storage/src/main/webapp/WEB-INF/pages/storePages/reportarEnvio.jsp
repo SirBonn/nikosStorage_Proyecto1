@@ -10,12 +10,7 @@
     </head>
     <body>
         <jsp:include page="../storePages/storeNavBar.jsp"/>
-        <c:if test="${isDev == false}">
-            <jsp:include page="../storePages/commonReportIncidencia.jsp"/>
-        </c:if>
-        <c:if test="${isDev != false}">
-            <jsp:include page="../storePages/commonReportDevolucion.jsp"/>
-        </c:if>
+        <jsp:include page="../storePages/commonReports.jsp"/>
 
 
     </body>

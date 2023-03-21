@@ -42,8 +42,8 @@ public class storeControlServlet extends HttpServlet {
 
             switch (accion) {
 
-                case "solicitarDevolucion":
-                    this.solicitarDevolucion(req, resp);
+                case "enviarReporte":
+                    this.enviarReporte(req, resp);
                     break;
 
             }
@@ -115,9 +115,8 @@ public class storeControlServlet extends HttpServlet {
 
         } catch (IOException | ServletException e) {
             e.printStackTrace(System.out);
-            // req.getRequestDispatcher("/WEB-INF/pages/storePages/store.jsp").forward(req, resp);
-
-            // this.cerrarSesion(req, resp);
+            req.getRequestDispatcher("/WEB-INF/pages/storePages/store.jsp").forward(req, resp);
+            this.cerrarSesion(req, resp);
         }
 
     }
@@ -299,13 +298,7 @@ public class storeControlServlet extends HttpServlet {
             req.setAttribute("isDev", true);
 
         } else {
-            int nuevaInc = this.inNext + 1;
-            Incidencia incidencia = new Incidencia(nuevaInc);
-            incidencia.setEnvioDevuelto(envio);
-            incidencia.setFechaIncidencia(incidencia.setNowDate());
-            incidencia.setEstadoIncidencia("ACTIVA");
 
-            req.setAttribute("incidencia", incidencia);
             req.setAttribute("isDev", false);
         }
 
@@ -334,37 +327,55 @@ public class storeControlServlet extends HttpServlet {
 
     }
 
-    private void solicitarDevolucion(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void enviarReporte(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         DevolucionDAO devolucionDAO = new DevolucionDAO();
+        IncidenciaDAO incidenciaDAO = new IncidenciaDAO();
 
         try {
             int codigoEnvio = Integer.parseInt(req.getParameter("codigoEnvio"));
+            int codigoEncargado = Integer.parseInt(req.getParameter("encargado"));
             Envio envio = new EnvioDAO().buscarEnvio(new Envio(codigoEnvio));
             int codigoProducto = Integer.parseInt(req.getParameter("codigoProducto"));
+            String isDev = req.getParameter("isDev");
             Producto prodcuto = new ListadoProductosDAO().obtenerProducto(envio.getPedidoEnviado(), new Producto(codigoProducto));
-            String motivoDevolucion = req.getParameter("motivoDevolucion");
-            int cantidadDevuelta = Integer.parseInt(req.getParameter("cantidad"));
-            prodcuto.setCantidad(cantidadDevuelta);
-            int nuevaDev = this.devNext;
-            Devolucion devolucion = new Devolucion(nuevaDev);
-            int codigoEncargado = Integer.parseInt(req.getParameter("encargado"));
             Usuario encargado = new UsuarioDAO().buscarUsuario(new Usuario(codigoEncargado), "BODEGUEROS");
-            ReclamoDevolucion reclamoDevolucion = new ReclamoDevolucion(devolucion.getCodigoDevolucion(), motivoDevolucion, prodcuto);
+            String motivo = req.getParameter("motivo");
+            int cantidad = Integer.parseInt(req.getParameter("cantidad"));
+            prodcuto.setCantidad(cantidad);
 
-            devolucion.setTotalDevuelto(reclamoDevolucion.getProductoDevuelto().getTotal());
-            devolucion.setFechaDevolucion(devolucion.setNowDate());
-            devolucion.setEstadoDevolucion("ACTIVA");
-            devolucion.setEncargado(encargado);
-            devolucion.setEnvioDevuelto(envio);
-            devolucion.setReclamoDevolucion(reclamoDevolucion);
+            if (isDev.equals("true")) {
+                int nuevaDev = this.devNext;
+                Devolucion devolucion = new Devolucion(nuevaDev, encargado, envio);
+                ReclamoDevolucion reclamoDevolucion = new ReclamoDevolucion(devolucion.getCodigoDevolucion(), motivo, prodcuto);
 
-            int rowsAffected = devolucionDAO.insertarDevolucion(devolucion);
+                devolucion.setTotalDevuelto(reclamoDevolucion.getProductoDevuelto().getTotal());
+                devolucion.setFechaDevolucion(devolucion.setNowDate());
+                devolucion.setEstadoDevolucion("ACTIVA");
+                devolucion.setReclamoDevolucion(reclamoDevolucion);
 
-            if (rowsAffected != 0) {
-                int rowsAff = new ReclamoDevolucionDAO().insertarReclamo(reclamoDevolucion);
-                getServletContext().setAttribute("Exito", "Se envio la solicitud con exito");
+                int rowsAffected = devolucionDAO.insertarDevolucion(devolucion);
+
+                if (rowsAffected != 0) {
+                    int rowsAff = new ReclamoDevolucionDAO().insertarReclamo(reclamoDevolucion);
+                    getServletContext().setAttribute("Exito", "Se envio la solicitud con exito");
+                } else {
+                    getServletContext().setAttribute("Error", "ocurrio un error al procesar la solicitud debido a " + devolucionDAO.getInforme());
+                }
             } else {
-                getServletContext().setAttribute("Error", "ocurrio un error al procesar la solicitud debido a " + devolucionDAO.getInforme());
+                int nuevaInc = this.inNext;
+                Incidencia incidencia = new Incidencia(nuevaInc, encargado, envio);
+                ReclamoIncidencia reclamoIncidencia = new ReclamoIncidencia(incidencia.getCodigo(), prodcuto, motivo, encargado);
+                incidencia.setFechaIncidencia(incidencia.setNowDate());
+                incidencia.setEstadoIncidencia("ACTIVA");
+                incidencia.setReclamoIncidencia(reclamoIncidencia);
+                int rowsAffected = incidenciaDAO.insertarIncidencia(incidencia);
+                if (rowsAffected != 0) {
+                    int rowsAff = new ReclamoIncidenciaDAO().insertarReclamo(reclamoIncidencia);
+                    getServletContext().setAttribute("Exito", "Se envio la solicitud con exito");
+                } else {
+                    getServletContext().setAttribute("Error", "ocurrio un error al procesar la solicitud debido a " + incidenciaDAO.getInforme());
+                }
+
             }
 
             req.getRequestDispatcher("gestion-tienda.jsp").forward(req, resp);

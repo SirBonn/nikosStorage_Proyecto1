@@ -38,6 +38,14 @@ public class Incidencia {
         this.codigo = codigo;
     }
 
+    public Incidencia(int codigo, Usuario encargado, Envio envioDevuelto) {
+        this.codigo = codigo+1;
+        this.encargado = encargado;
+        this.envioDevuelto = envioDevuelto;
+    }
+
+    
+    
     public Incidencia(int codigo, String fechaIncidencia, String estadoIncidencia, Usuario encargado) {
         this.codigo = codigo;
         this.fechaIncidencia = setLocalDate(fechaIncidencia);

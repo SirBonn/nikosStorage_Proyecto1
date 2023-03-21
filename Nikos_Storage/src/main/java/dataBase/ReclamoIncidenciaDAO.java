@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class ReclamoIncidenciaDAO {
 
-    public int incertarReclamo(ReclamoIncidencia reclamoIncidencia) {
+    public int insertarReclamo(ReclamoIncidencia reclamoIncidencia) {
 
         final String SQL_INSERT = "INSERT INTO RECLAMOS_INCIDENCIAS  (codigo_incidencia, cantidad_afectada, "
                 + "motivo_incidencia, codigo_producto_incidente) VALUES (?, ?, ?, ?)";

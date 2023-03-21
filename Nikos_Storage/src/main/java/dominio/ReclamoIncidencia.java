@@ -22,7 +22,7 @@ public class ReclamoIncidencia {
     private int codigoIncidencia;
     private Producto producto;
     private String motivoIncidencia;
-    private Bodeguero bodegueroEncargado;
+    private Usuario bodegueroEncargado;
 
     public ReclamoIncidencia() {
     }
@@ -36,9 +36,18 @@ public class ReclamoIncidencia {
         this.motivoIncidencia = motivoIncidencia;
         this.bodegueroEncargado = bodegueroEncargado;
     }
+    
+    
 
 //    public void agregarProducto(Producto producto) {
 //        this.productos.add(producto);
 //    }
+
+    public ReclamoIncidencia(int codigoIncidencia, Producto producto, String motivoIncidencia, Usuario bodegueroEncargado) {
+        this.codigoIncidencia = codigoIncidencia;
+        this.producto = producto;
+        this.motivoIncidencia = motivoIncidencia;
+        this.bodegueroEncargado = bodegueroEncargado;
+    }
 
 }

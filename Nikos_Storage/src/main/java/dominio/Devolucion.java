@@ -35,8 +35,16 @@ public class Devolucion {
     }
 
     public Devolucion(int codigoDevolucion) {
-        this.codigoDevolucion = codigoDevolucion+1;
+        this.codigoDevolucion = codigoDevolucion;
     }
+
+    public Devolucion(int codigoDevolucion, Usuario encargado, Envio envioDevuelto) {
+        this.codigoDevolucion = codigoDevolucion+1;
+        this.encargado = encargado;
+        this.envioDevuelto = envioDevuelto;
+    }
+    
+    
 
     public Devolucion(int codigoDevolucion, String fechaDevolucion, String estadoDevolucion, double totalDevuelto, Envio envioDevuelto, Usuario encargado) {
         this.codigoDevolucion = codigoDevolucion;

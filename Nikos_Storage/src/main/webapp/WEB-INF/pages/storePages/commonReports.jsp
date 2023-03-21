@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<form action="${pageContext.request.contextPath}/storeControlServlet?accion=solicitarDevolucion" method="POST">
+<form action="${pageContext.request.contextPath}/storeControlServlet?accion=enviarReporte&isDev=${isDev}" method="POST">
 
     <secion id="formEdit" >
         <div class="container">
@@ -10,7 +10,13 @@
                         <div class="card-header">
                             <div class="col-xl-3">
                             </div>
-                            <h4>Solicitar devolucion</h4>
+                            <c:if test="${isDev == false}">
+                                <h4>Reportar Producto</h4>
+                            </c:if>
+                            <c:if test="${isDev != false}">
+                                <h4>Solicitar devolucion</h4>
+                            </c:if>
+
                         </div>
 
                         <div class="card-body">
@@ -40,8 +46,8 @@
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <select name="motivoDevolucion" class="custom-select mb-3 col">
-                                        <option selected>Motivo Devolucion</option>
+                                    <select name="motivo" class="custom-select mb-3 col">
+                                        <option selected>Motivo</option>
                                         <option value="PRODUCTO EQUIVOCADO">Producto equivocado</option>
                                         <option value="PRODUCTO DAÑADO">Producto dañado</option>
                                         <option value="PRODUCTO NO SOLICITADO">producto no solicitrado</option>
@@ -52,7 +58,7 @@
                                     <select name="encargado" class="custom-select mb-3 col">
                                         <option selected>Asigna un encargado</option>
                                         <c:forEach var="bodeguero" items="${bodegueros}">
-                                            
+
                                             <option value ="${bodeguero.codigo}"> ${bodeguero.codigo} ${bodeguero.nombre}</option> 
 
                                         </c:forEach>
@@ -73,7 +79,7 @@
                         Cancelar
                     </a>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-6">
                     <button type="submit" class="btn btn-danger btn-block">
                         Enviar Solicitud
                     </button>
