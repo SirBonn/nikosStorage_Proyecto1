@@ -241,7 +241,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Tiendas</h4>
+                        <h4>Usuarios</h4>
                     </div>
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
@@ -283,7 +283,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Tiendas</h4>
+                        <h4>Productos</h4>
                     </div>
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
@@ -324,7 +324,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Tiendas</h4>
+                        <h4>Productos</h4>
                     </div>
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
@@ -364,7 +364,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Tiendas</h4>
+                        <h4>Productos</h4>
                     </div>
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
