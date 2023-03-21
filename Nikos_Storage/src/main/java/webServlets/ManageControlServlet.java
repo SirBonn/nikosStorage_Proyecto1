@@ -92,6 +92,18 @@ public class ManageControlServlet extends HttpServlet {
         List<Usuario> bodegueros = new UsuarioDAO().listarUsuarios("BODEGUEROS");
         List<Usuario> supervisores = new UsuarioDAO().listarUsuarios("SUPERVISORES");
         List<Tienda> tiendas = new TiendaDAO().listarTiendas();
+        List<Usuario> topPedidos = new PedidoDAO().getTopUsrPedidos();
+        List<Tienda> topTiendasPedidos = new PedidoDAO().getTopTiendasEnvios();
+        List<Tienda> topTiendasEnv = new PedidoDAO().getTopTiendasEnvios();
+        List<Producto> topProductos = new ProductoDAO().getTopProductosPedidos();
+        List<Producto> topProductosInc = new IncidenciaDAO().getTopProductosInc();
+        List<Producto> topProductosDev = new DevolucionDAO().getTopProductosDev();
+        req.setAttribute("topProductosInc", topProductosInc);
+        req.setAttribute("topProductosDev", topProductosDev);
+        req.setAttribute("topProductos", topProductos);
+        req.setAttribute("topTndEnvios", topTiendasEnv);
+        req.setAttribute("topTndPedidos", topTiendasPedidos);
+        req.setAttribute("topUsrPedidos", topPedidos);
         req.setAttribute("dependientes", dependientes);
         req.setAttribute("bodegueros", bodegueros);
         req.setAttribute("supervisores", supervisores);

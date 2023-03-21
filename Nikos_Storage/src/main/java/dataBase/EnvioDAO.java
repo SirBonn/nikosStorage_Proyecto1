@@ -236,4 +236,44 @@ public class EnvioDAO {
         return rowsAffected;
     }
 
+    public List<Tienda> getTopTiendaEnvios() {
+
+        final String SQL_SELECT = "SELECT TIENDAS.codigo_tienda, COUNT(*) AS totalEnvios FROM TIENDAS JOIN "
+                + "ENVIOS ON TIENDAS.codigo_tienda = ENVIOS.tienda_destino GROUP BY TIENDAS.codigo_tienda "
+                + "ORDER BY totalPedidos DESC;";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Tienda tienda = null;
+        List<Tienda> tiendas = new ArrayList<>();
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("TIENDAS.codigo_tienda");
+                tienda = new TiendaDAO().buscarTienda(new Tienda(codigo));
+                int cantidad = resultSet.getInt("totalEnvios");
+                tienda.setCantidad(cantidad);
+                tiendas.add(tienda);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return tiendas;
+    }
+    
 }

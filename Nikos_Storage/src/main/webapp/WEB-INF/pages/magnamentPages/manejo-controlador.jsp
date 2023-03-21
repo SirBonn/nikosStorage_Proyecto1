@@ -84,8 +84,8 @@
                                         <c:forEach var="tienda" items="${tiendas}">
                                             <tr>
                                             <option value ="${tienda.codigo_tienda}">${tienda.codigo_tienda}</option> 
-                                        </tr>
-                                    </c:forEach>
+                                            </tr>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
@@ -147,17 +147,246 @@
 </div>
 
 <%--Reporte tiendas -Modal--%>
-<div class="modal fade" id="reporteTiendas" role="dialog">
+<div class="modal fade" id="reporteTiendasPedidos" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-tittle">Importar archivo</h5>
+                <h5 class="modal-tittle">Tiendas con Mas pedidos</h5>
                 <button class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Tiendas</h4>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>     
+                                <th>Cantidad de pedidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="tienda" items="${topTndPedidos}">
+                                <tr>
+                                    <td>${tienda.codigo_tienda}</td>
+                                    <td>${tienda.nombre}</td>
+                                    <td>${tienda.tipo}</td>
+                                    <td>${tienda.cantidad}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reporteTiendasEnvios" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-tittle">Tiendas con Mas envios</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Tiendas</h4>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Tipo</th>     
+                                <th>Cantidad de envios</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="tienda" items="${topTndEnvios}">
+                                <tr>
+                                    <td>${tienda.codigo_tienda}</td>
+                                    <td>${tienda.nombre}</td>
+                                    <td>${tienda.tipo}</td>
+                                    <td>${tienda.cantidad}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="topUsuariosPedidos" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-tittle">Usuarios con mas</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Tiendas</h4>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Tienda</th>     
+                                <th>Cantidad de pedidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="usuario" items="${topUsrPedidos}">
+                                <tr>
+                                    <td>${usuario.codigo}</td>
+                                    <td>${usuario.nombre}</td>
+                                    <td>${usuario.tienda}</td>
+                                    <td>${usuario.cantidad}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="topProductos" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-tittle">Top Productos</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Tiendas</h4>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Costo</th>     
+                                <th>Cantidad de pedidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="producto" items="${topProductos}">
+                                <tr>
+                                    <td>${producto.codigo}</td>
+                                    <td>${producto.nombre}</td>
+                                    <td>${producto.precioVenta}</td>
+                                    <td>${producto.cantidad}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="topProductosDev" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-tittle">Productos mas devueltos</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Tiendas</h4>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Tienda</th>     
+                                <th>Cantidad de devoluciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="producto" items="${topProductosDev}">
+                                <tr>
+                                    <td>${producto.codigo}</td>
+                                    <td>${producto.nombre}</td>
+                                    <td>${producto.cantidad}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="topProductosInc" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-tittle">Productos mas incidentes</h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Tiendas</h4>
+                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Tienda</th>     
+                                <th>Cantidad de incidencias</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="producto" items="${topProductosInc}">
+                                <tr>
+                                    <td>${producto.codigo}</td>
+                                    <td>${producto.nombre}</td>
+                                    <td>${producto.cantidad}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
         </div>
     </div>

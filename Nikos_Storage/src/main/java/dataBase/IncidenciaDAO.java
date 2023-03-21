@@ -7,6 +7,7 @@ package dataBase;
 
 import dominio.Envio;
 import dominio.Incidencia;
+import dominio.Producto;
 import dominio.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -177,5 +178,45 @@ public class IncidenciaDAO {
 
         return rowsAffected;
     }
-    
+
+public List<Producto> getTopProductosInc(){
+
+        final String SQL_SELECT = "SELECT PRODUCTOS.codigo_producto, COUNT(*) AS totalProductos FROM "
+                + "PRODUCTOS JOIN RECLAMOS_INCIDENCIAS ON PRODUCTOS.codigo_producto = RECLAMOS_INCIDENCIAS.codigo_producto_incidente "
+                + "GROUP BY PRODUCTOS.codigo_producto ORDER BY totalProductos DESC";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Producto producto = null;
+        List<Producto> productos = new ArrayList<>();
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("PRODUCTOS.codigo_producto");
+                producto = new ProductoDAO().buscarProducto(new Producto(codigo));
+                int cantidad = resultSet.getInt("totalProductos");
+                producto.setCantidad(cantidad);
+                productos.add(producto);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return productos;
+    }
+
 }

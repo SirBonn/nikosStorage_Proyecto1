@@ -22,11 +22,13 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Reportes</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Tiendas con mas pedidos</a></li>
-                            <li><a class="dropdown-item" href="#">Usuarios con mas envios</a></li>
-                            <li><a class="dropdown-item" href="#">Usuarios con mas pedidos</a></li>
-                            <li><a class="dropdown-item" href="#">Productos mas solicitados</a></li>
-                            <li><a class="dropdown-item" href="#">Productos mas problematicos</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#reporteTiendasPedidos">Tiendas con mas pedidos</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#reporteTiendasEnvios">Tiendas con mas envios</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#topUsuariosPedidos">Usuarios con mas pedidos</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#topProductos">Productos mas solicitados</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#topProductosDev">Productos mas devueltos</a></li>
+                            <li><a class="dropdown-item" data-toggle="modal" data-target="#topProductosInc">Productos mas incidentes</a></li>
+
 
                         </ul>
                     </li>

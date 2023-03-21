@@ -8,6 +8,7 @@ package dataBase;
 import dominio.Devolucion;
 import dominio.Envio;
 import dominio.Pedido;
+import dominio.Producto;
 import dominio.Tienda;
 import dominio.Usuario;
 import java.sql.Connection;
@@ -188,4 +189,44 @@ public class DevolucionDAO {
         return rowsAffected;
     }
 
+    public List<Producto> getTopProductosDev(){
+
+        final String SQL_SELECT = "SELECT PRODUCTOS.codigo_producto, COUNT(*) AS totalProductos FROM PRODUCTOS "
+                + "JOIN PRODUCTOS_DEVUELTOS ON PRODUCTOS.codigo_producto = PRODUCTOS_DEVUELTOS.codigo_producto_devuelto "
+                + "GROUP BY PRODUCTOS.codigo_producto ORDER BY totalProductos DESC";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Producto producto = null;
+        List<Producto> productos = new ArrayList<>();
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("PRODUCTOS.codigo_producto");
+                producto = new ProductoDAO().buscarProducto(new Producto(codigo));
+                int cantidad = resultSet.getInt("totalProductos");
+                producto.setCantidad(cantidad);
+                productos.add(producto);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return productos;
+    }
+    
 }

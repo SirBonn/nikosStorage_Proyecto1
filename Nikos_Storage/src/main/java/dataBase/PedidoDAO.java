@@ -225,4 +225,86 @@ public class PedidoDAO {
         return rowsAffected;
     }
 
+    public List<Usuario> getTopUsrPedidos() {
+
+        final String SQL_SELECT = "SELECT DEPENDIENTES.codigo, COUNT(*) as totalPedidos FROM DEPENDIENTES "
+                + "JOIN PEDIDOS ON DEPENDIENTES.codigo = PEDIDOS.usuario_solicitante GROUP BY DEPENDIENTES.CODIGO "
+                + "ORDER BY totalPedidos DESC";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Usuario usuario = null;
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("DEPENDIENTES.codigo");
+                usuario = new UsuarioDAO().buscarUsuario(new Usuario(codigo), "DEPENDIENTES");
+                int cantidad = resultSet.getInt("totalPedidos");
+                usuario.setCantidad(cantidad);
+                usuarios.add(usuario);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return usuarios;
+    }
+    
+    public List<Tienda> getTopTiendasEnvios() {
+
+        final String SQL_SELECT = "SELECT TIENDAS.codigo_tienda, COUNT(*) AS totalPedidos FROM TIENDAS JOIN "
+                + "PEDIDOS ON TIENDAS.codigo_tienda = PEDIDOS.tienda_solicitante GROUP BY TIENDAS.codigo_tienda "
+                + "ORDER BY totalPedidos DESC;";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Tienda tienda = null;
+        List<Tienda> tiendas = new ArrayList<>();
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("TIENDAS.codigo_tienda");
+                tienda = new TiendaDAO().buscarTienda(new Tienda(codigo));
+                int cantidad = resultSet.getInt("totalPedidos");
+                tienda.setCantidad(cantidad);
+                tiendas.add(tienda);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return tiendas;
+    }
+    
+    
+    
 }

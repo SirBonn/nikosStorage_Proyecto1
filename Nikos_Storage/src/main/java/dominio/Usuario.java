@@ -21,6 +21,7 @@ public class Usuario {
     private String password;
     private String email;
     private int tienda;
+    private int cantidad;
 
     public Usuario() {
     }
@@ -102,6 +103,14 @@ public class Usuario {
         this.email = email;
     }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
     public int getCodigo() {
         return codigo;
     }

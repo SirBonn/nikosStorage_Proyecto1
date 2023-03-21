@@ -19,7 +19,8 @@ public class Tienda {
     private String tipo;
     private Catalogo catalogo; //refiere a la tabla que almacena muchos productos en muchas tiendas
     private Pedido pedido;
-
+    private int cantidad;
+    
     public Tienda() {
     }
 
