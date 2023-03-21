@@ -20,9 +20,8 @@ import lombok.ToString;
 public class ReclamoDevolucion {
 
     private int codigoDevolucion; //referencia a codigoDevolucion en devoluciones
-    private ArrayList<Producto> productos = new ArrayList<>();
+    private Producto productoDevuelto;
     private String motivoDevolucion;
-    private int codigoProductoDevuelto;
 
     public ReclamoDevolucion() {
     }
@@ -31,19 +30,21 @@ public class ReclamoDevolucion {
         this.codigoDevolucion = codigoDevolucion;
     }
 
+    
+    
     public ReclamoDevolucion(int codigoDevolucion, String motivoDevolucion) {
         this.codigoDevolucion = codigoDevolucion;
         this.motivoDevolucion = motivoDevolucion;
     }
     
-    public ReclamoDevolucion(int codigoDevolucion, String motivoDevolucion, Bodeguero bodegueroEncargado, int codigoProductoDevuelto) {
+    public ReclamoDevolucion(int codigoDevolucion, String motivoDevolucion, Producto productoDevuelto) {
         this.codigoDevolucion = codigoDevolucion;
         this.motivoDevolucion = motivoDevolucion;
-        this.codigoProductoDevuelto = codigoProductoDevuelto;
+        this.productoDevuelto = productoDevuelto;
     }
 
-    public void agregarProducto(Producto producto) {
-        this.productos.add(producto);
-    }
+//    public void agregarProducto(Producto producto) {
+//        this.productos.add(producto);
+//    }
     
 }

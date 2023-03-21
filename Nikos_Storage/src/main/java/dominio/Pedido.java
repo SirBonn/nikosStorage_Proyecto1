@@ -27,7 +27,7 @@ public class Pedido {
     private Date fechaPedido = setNowDate();
     private double costoPedido;
     private String estadoPedido = "SOLICITADO";
-    private Usuario dependienteSolicitante;
+    private Usuario dependiente;
     private ListadoProductos listadoProductos;
     private Tienda tienda;
 
@@ -40,12 +40,12 @@ public class Pedido {
 
     public Pedido(int codigoPedido, Usuario dependienteSolicitante, Tienda tienda) {
         this.codigoPedido = codigoPedido + 1;
-        this.dependienteSolicitante = dependienteSolicitante;
+        this.dependiente = dependienteSolicitante;
         this.tienda = tienda;
     }
 
     public Pedido(Usuario dependienteSolicitante) {
-        this.dependienteSolicitante = dependienteSolicitante;
+        this.dependiente = dependienteSolicitante;
     }
 
     public Pedido(int codigoPedido, String fechaPedido, double costoPedido, String estadoPedido, Usuario dependienteSolicitante, Tienda tienda) {
@@ -53,7 +53,7 @@ public class Pedido {
         this.fechaPedido = setLocalDate(fechaPedido);
         this.costoPedido = costoPedido;
         this.estadoPedido = estadoPedido;
-        this.dependienteSolicitante = dependienteSolicitante;
+        this.dependiente = dependienteSolicitante;
         this.tienda = tienda;
     }
 
@@ -62,7 +62,7 @@ public class Pedido {
         this.fechaPedido = setLocalDate(fechaPedido);
         this.costoPedido = costoPedido;
         this.estadoPedido = estadoPedido;
-        this.dependienteSolicitante = dependienteSolicitante;
+        this.dependiente = dependienteSolicitante;
     }
 
     public Date setNowDate() {
@@ -104,7 +104,7 @@ public class Pedido {
     }
 
     public int getDependienteSolicitante() {
-        return dependienteSolicitante.getCodigo();
+        return dependiente.getCodigo();
     }
 
     public void crearLista(int codigo) {

@@ -69,12 +69,26 @@ public class Incidencia {
     }
 
     public String getDateIncidencia() {
-       
+
         LocalDate localDate = this.fechaIncidencia.toLocalDate();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fechaStr = localDate.format(formatter);
-        
+
         return fechaStr;
+    }
+
+    public Date setNowDate() {
+        Date fechaDate = null;
+        try {
+
+            LocalDate fechaLD = LocalDate.now();
+            fechaDate = Date.valueOf(fechaLD);
+
+        } catch (Exception e) {
+            System.out.println("no se pudo parsear la fecha por " + e);
+            e.printStackTrace(System.out);
+        }
+        return fechaDate;
     }
 
     public int getEncargado() {
@@ -86,7 +100,7 @@ public class Incidencia {
     }
 
     public void agregarProducto(Producto producto) {
-        reclamoIncidencia.agregarProducto(producto);
+        reclamoIncidencia.setProducto(producto);
     }
 
 }

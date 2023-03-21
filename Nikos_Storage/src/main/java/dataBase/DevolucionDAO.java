@@ -40,7 +40,7 @@ public class DevolucionDAO {
             preparedStatement = connection.prepareStatement(SQL_INSERT);
 
             preparedStatement.setInt(1, devolucion.getCodigoDevolucion());
-            preparedStatement.setTimestamp(2, devolucion.getTimestampDevolucion());
+            preparedStatement.setString(2, devolucion.getTimestampDevolucion());
             preparedStatement.setString(3, devolucion.getEstadoDevolucion());
             preparedStatement.setDouble(4, devolucion.getTotalDevuelto());
             preparedStatement.setInt(5, devolucion.getEnvioDevuelto().getCodigoEnvio());
@@ -52,7 +52,7 @@ public class DevolucionDAO {
             System.out.println("error al agregar una devolucion \n" + e);
         } finally {
 
-            System.out.println("se agrego un devolucion correctamente");
+                System.out.println("se agrego un devolucion correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 

@@ -102,4 +102,90 @@ public class ListadoProductosDAO {
         return productos;
     }
     
+    public Producto obtenerProducto(Pedido pedido, Producto producto) {
+
+        final String SQL_SELECT = "SELECT cantidad, "
+                + "precio_costo, precio_total FROM LISTADO_PRODUCTOS WHERE codigo_pedido=? && codigo_producto=?";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            preparedStatement.setInt(1, pedido.getCodigoPedido());
+            preparedStatement.setInt(2, producto.getCodigo());
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int cantidadProducto = resultSet.getInt("cantidad");
+                producto.setCantidad(cantidadProducto);
+                double costo = resultSet.getDouble("precio_costo");
+                producto.setPrecioVenta(costo);
+                double precio = resultSet.getDouble("precio_total"); //precio del producto * cantidad de productos
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return producto;
+    }
+    
+        public ListadoProductos listarPedido (Pedido pedido) {
+
+        final String SQL_SELECT = "SELECT codigo_producto, cantidad, "
+                + "precio_costo, precio_total FROM LISTADO_PRODUCTOS WHERE codigo_pedido=?";
+
+        ListadoProductos listadoProductos = new ListadoProductos(pedido.getCodigoPedido());
+        List<Producto> productos = new ArrayList<>();
+        Producto producto;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            preparedStatement.setInt(1, pedido.getCodigoPedido());
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigoProducto = resultSet.getInt("codigo_producto");
+                int cantidadProducto = resultSet.getInt("cantidad");
+                double costo = resultSet.getDouble("precio_costo"); //precio del producto
+                double precio = resultSet.getDouble("precio_total"); //precio del producto * cantidad de productos
+
+                producto = new Producto(codigoProducto, costo, cantidadProducto);
+                productos.add(producto);
+
+            }
+            
+            listadoProductos.setListadoProductos(productos);
+            
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return listadoProductos;
+    }
+    
 }

@@ -71,7 +71,7 @@ public class CatalogoDAO {
         try {
             connection = DBConectionManager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT);
-            ArrayList<Producto> productos = catalogo.getProductos();
+            List<Producto> productos = catalogo.getProductos();
 
             for (Producto producto : productos) {
 

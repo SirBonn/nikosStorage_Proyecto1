@@ -118,6 +118,50 @@ public class UsuarioDAO {
         return usuario;
     }
 
+    public List<Usuario> listarUsuariosTienda(int tienda) {
+
+        final String SQL_SELECT = "SELECT codigo, nombre, apellido, "
+                + "nick, user_password, email, nivel_usuario FROM BODEGUEROS WHERE tienda_asignada = ?";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Usuario usuario = null;
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            preparedStatement.setInt(1, tienda);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("codigo");
+                String nombre = resultSet.getString("nombre");
+                String apellido = resultSet.getString("apellido");
+                String nick = resultSet.getString("nick");
+                String password = resultSet.getString("user_password");
+                String email = resultSet.getString("email");
+                int lvlUsr = resultSet.getInt("nivel_usuario");
+                usuario = new Usuario(codigo, lvlUsr, nombre, apellido, nick, password, email);
+                usuarios.add(usuario);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            this.informe = ex.getMessage();
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return usuarios;
+    }
+
     public Usuario logearUsuario(Usuario usuario) {
 
         List<String> tables = Arrays.asList("ADMINISTRADORES", "DEPENDIENTES", "BODEGUEROS", "SUPERVISORES");

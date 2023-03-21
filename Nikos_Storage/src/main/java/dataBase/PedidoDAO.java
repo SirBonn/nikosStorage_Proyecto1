@@ -5,6 +5,7 @@
  */
 package dataBase;
 
+import dominio.ListadoProductos;
 import dominio.Pedido;
 import dominio.Tienda;
 import dominio.Usuario;
@@ -128,8 +129,8 @@ public class PedidoDAO {
                 double costoTotal = resultSet.getDouble("costo_total_pedido");
                 String estado = resultSet.getString("estado_pedido");
                 Usuario usuarioSolicitante = new UsuarioDAO().buscarUsuario(new Usuario(resultSet.getInt("usuario_solicitante")), "DEPENDIENTES");
-                pedido = new Pedido(codigo, fecha, costoTotal, estado, usuarioSolicitante);
-
+                Tienda tiendaDestino = new TiendaDAO().buscarTienda(new Tienda(tienda));
+                pedido = new Pedido(codigo, fecha, costoTotal, estado, usuarioSolicitante, tiendaDestino);
                 pedidos.add(pedido);
 
             }
@@ -152,7 +153,7 @@ public class PedidoDAO {
     public Pedido buscarPedido(Pedido pedido) {
 
         final String SQL_SELECT_BY_ID = "SELECT fecha_pedido, costo_total_pedido,"
-                + "estado_pedido, usuario_solicitante FROM PEDIDOS WHERE codigo_pedido=?";
+                + "estado_pedido, usuario_solicitante, tienda_solicitante FROM PEDIDOS WHERE codigo_pedido=?";
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -172,7 +173,11 @@ public class PedidoDAO {
                 String estado = resultSet.getString("estado_pedido");
                 pedido.setEstadoPedido(estado);
                 Usuario usuarioSolicitante = new UsuarioDAO().buscarUsuario(new Usuario(resultSet.getInt("usuario_solicitante")), "DEPENDIENTES");
-                pedido.setDependienteSolicitante(usuarioSolicitante);
+                pedido.setDependiente(usuarioSolicitante);
+                ListadoProductos listadoProductos = new ListadoProductosDAO().listarPedido(pedido);
+                pedido.setListadoProductos(listadoProductos);
+                Tienda tienda =new TiendaDAO().buscarTienda(new Tienda(resultSet.getInt("tienda_solicitante")));
+                pedido.setTienda(tienda);
             }
 
         } catch (SQLException ex) {
@@ -188,6 +193,36 @@ public class PedidoDAO {
         }
 
         return pedido;
+    }
+
+    public int actualizarPedidos(Pedido pedido) {
+
+        final String SQL_UPDATE = "UPDATE PEDIDOS SET estado_pedido = ? "
+                + "WHERE codigo_pedido=?";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        int rowsAffected = 0;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_UPDATE);
+
+            preparedStatement.setString(1, pedido.getEstadoPedido());
+            preparedStatement.setInt(2, pedido.getCodigoPedido());
+
+            rowsAffected = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return rowsAffected;
     }
 
 }

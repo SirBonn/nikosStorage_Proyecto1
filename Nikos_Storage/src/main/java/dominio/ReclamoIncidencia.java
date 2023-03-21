@@ -20,7 +20,7 @@ import lombok.ToString;
 public class ReclamoIncidencia {
 
     private int codigoIncidencia;
-    private ArrayList<Producto> productos = new ArrayList<>();
+    private Producto producto;
     private String motivoIncidencia;
     private Bodeguero bodegueroEncargado;
 
@@ -37,8 +37,8 @@ public class ReclamoIncidencia {
         this.bodegueroEncargado = bodegueroEncargado;
     }
 
-    public void agregarProducto(Producto producto) {
-        this.productos.add(producto);
-    }
+//    public void agregarProducto(Producto producto) {
+//        this.productos.add(producto);
+//    }
 
 }

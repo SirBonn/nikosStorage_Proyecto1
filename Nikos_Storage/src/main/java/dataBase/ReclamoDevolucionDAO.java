@@ -30,9 +30,8 @@ public class ReclamoDevolucionDAO {
         try {
             connection = DBConectionManager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT);
-            ArrayList<Producto> productos = reclamoDevolucion.getProductos();
+            Producto producto = reclamoDevolucion.getProductoDevuelto();
 
-            for (Producto producto : productos) {
 
                 preparedStatement.setInt(1, reclamoDevolucion.getCodigoDevolucion());
                 preparedStatement.setInt(2, producto.getCodigo());
@@ -42,7 +41,6 @@ public class ReclamoDevolucionDAO {
                 preparedStatement.setString(6, reclamoDevolucion.getMotivoDevolucion());
 
                 rowAffected = preparedStatement.executeUpdate();
-            }
 
         } catch (SQLException e) {
             System.out.println("error al agregar un reclamo\n" + e);

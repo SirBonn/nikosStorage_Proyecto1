@@ -5,6 +5,7 @@
  */
 package dataBase;
 
+import dominio.Catalogo;
 import dominio.Tienda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -82,6 +83,9 @@ public class TiendaDAO {
                 tienda.setDireccion(direccion);
                 String tipo_tienda = resultSet.getString("tipo_tienda");
                 tienda.setTipo(tipo_tienda);
+                Catalogo catalogo = new Catalogo(tienda.getCodigo_tienda());
+                catalogo.setProductos(new CatalogoDAO().listarCatalogo(tienda));
+                tienda.setCatalogo(catalogo);
             }
 
         } catch (SQLException e) {

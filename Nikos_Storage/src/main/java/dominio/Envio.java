@@ -64,11 +64,11 @@ public class Envio {
 
     public String getDateEnvio() {
 
-        LocalDate localDate = this.fechaEnvio.toLocalDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String fechaStr = localDate.format(formatter);
+                LocalDate localDate = this.fechaEnvio.toLocalDate();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String fechaStr = localDate.format(formatter);
 
-        return fechaStr;
+                return fechaStr;
     }
 
     public String getDateRecepcion() {
@@ -76,10 +76,24 @@ public class Envio {
         if (this.fechaRecepcion != null) {
             LocalDate localDate = this.fechaRecepcion.toLocalDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-             fechaStr = localDate.format(formatter);
-        } 
+            fechaStr = localDate.format(formatter);
+        }
 
         return fechaStr;
+    }
+
+    public Date setNowDate() {
+        Date fechaDate = null;
+        try {
+
+            LocalDate fechaLD = LocalDate.now();
+            fechaDate = Date.valueOf(fechaLD);
+
+        } catch (Exception e) {
+            System.out.println("no se pudo parsear la fecha por " + e);
+            e.printStackTrace(System.out);
+        }
+        return fechaDate;
     }
 
     public int getTiendaDestino() {

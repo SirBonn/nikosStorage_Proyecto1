@@ -182,6 +182,7 @@ public class EnvioDAO {
                 envio.setEstado(estado);
                 int codigoPedido = resultSet.getInt("productos_enviados");
                 Pedido pedido = new PedidoDAO().buscarPedido(new Pedido(codigoPedido));
+                
                 envio.setPedidoEnviado(pedido);
                 Tienda tienda = new TiendaDAO().buscarTienda(new Tienda(resultSet.getInt("tienda_destino")));
                 envio.setTiendaDestino(tienda);
@@ -203,6 +204,37 @@ public class EnvioDAO {
         }
 
         return envio;
+    }
+
+    public int actualizarEnvio(Envio envio) {
+
+        final String SQL_UPDATE = "UPDATE ENVIOS SET estado_envio = ?, fecha_recepcion = ? "
+                + "WHERE codigo_envio=?";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        int rowsAffected = 0;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_UPDATE);
+
+            preparedStatement.setString(1, envio.getEstado());
+            preparedStatement.setString(2, envio.getDateRecepcion());
+            preparedStatement.setInt(3, envio.getCodigoEnvio());
+
+            rowsAffected = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return rowsAffected;
     }
 
 }

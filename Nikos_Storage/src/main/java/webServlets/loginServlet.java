@@ -44,11 +44,11 @@ public class loginServlet extends HttpServlet {
             request.getRequestDispatcher("gestion-tienda.jsp").forward(request, response);
 
         } else if (isLogged && loggedUsuario.getLevelUsr() == 2) {
-            session.setAttribute(nick, loggedUsuario.getPassword());
+            session.setAttribute("bodeguero", loggedUsuario);
             response.sendRedirect("gestion-bodega.jsp");
 
         } else if (isLogged && loggedUsuario.getLevelUsr() == 3) {
-            session.setAttribute(nick, loggedUsuario.getPassword());
+            session.setAttribute("Supervisor", loggedUsuario);
             response.sendRedirect("gestion-supervisora.jsp");
 
         } else {

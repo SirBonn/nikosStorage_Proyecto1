@@ -66,9 +66,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-primary" type="submit"> Agregar </button>
-                                </div>
                             </div>
                         </div>
                     </div>
