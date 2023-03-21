@@ -182,7 +182,7 @@ CREATE TABLE PRODUCTOS_DEVUELTOS(
     precio_total_devuelto DECIMAL(9,2) NOT NULL,
     motivo_devolucion VARCHAR(25) NOT NULL, /*4 motivos, de un valor 0 -> 3*/
     codigo_producto_devuelto INT NOT NULL,
-    PRIMARY KEY (codigo_devolucion),
+    /*PRIMARY KEY (codigo_devolucion),*/
     CONSTRAINT codigo_devolucion_fk
     FOREIGN KEY (codigo_devolucion)
     REFERENCES DEVOLUCIONES (codigo_devolucion),
