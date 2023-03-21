@@ -34,6 +34,17 @@ public class Envio {
         this.codigoEnvio = codigoEnvio;
     }
 
+    public Envio(Date fechaEnvio, String estado, double totalEnvio, Pedido pedidoEnviado, Tienda tiendaDestino, ListadoProductos listadoEnvio) {
+        this.fechaEnvio = fechaEnvio;
+        this.estado = estado;
+        this.totalEnvio = totalEnvio;
+        this.pedidoEnviado = pedidoEnviado;
+        this.tiendaDestino = tiendaDestino;
+        this.listadoEnvio = listadoEnvio;
+    }
+
+    
+    
     public Envio(int codigoEnvio, String fechaEnvio, String fechaRecepcion, String estado, double precioEnvio,
             Pedido productosEnviados, Tienda tiendaDestino) {
         this.codigoEnvio = codigoEnvio;

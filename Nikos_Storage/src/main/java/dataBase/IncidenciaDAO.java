@@ -104,4 +104,78 @@ public class IncidenciaDAO {
         return incidencias;
     }
 
+        public Incidencia buscarIncidencia(Incidencia incidencia) {
+
+        final String SQL_SELECT_BY_ID = "SELECT fecha_incidencia, estado_incidencia, "
+                + "envio_incidente, bodeguero_encargado FROM INCIDENCIAS WHERE codigo_incidencia=?";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_SELECT_BY_ID);
+            preparedStatement.setInt(1, incidencia.getCodigo());
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                incidencia.setFechaIncidencia(incidencia.setNowDate());
+                String estado = resultSet.getString("estado_incidencia");
+                incidencia.setEstadoIncidencia(estado);
+                int codigoEnvio = resultSet.getInt("envio_incidente");
+                Envio envio = new EnvioDAO().buscarEnvio(new Envio(codigoEnvio));
+
+                incidencia.setEnvioDevuelto(envio);
+                Usuario encargado = new UsuarioDAO().buscarUsuario(new Usuario(resultSet.getInt("bodeguero_encargado")), "BODEGUEROS");
+                incidencia.setEncargado(encargado);
+
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+            this.informe += ex.getMessage() + "\n";
+
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(resultSet);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return incidencia;
+    }
+    
+    public int actualizarIncidencia(Incidencia incidencia) {
+
+        final String SQL_UPDATE = "UPDATE INCIDENCIAS SET estado_incidencia = ?, estado_incidencia =? "
+                + "WHERE codigo_incidencia=?";
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        int rowsAffected = 0;
+
+        try {
+            connection = DBConectionManager.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_UPDATE);
+
+            preparedStatement.setString(1, incidencia.getEstadoIncidencia());
+            preparedStatement.setString(2, incidencia.getSolucion());
+            preparedStatement.setInt(3, incidencia.getCodigo());
+
+            rowsAffected = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        } finally {
+
+            DBConectionManager.close(connection);
+            DBConectionManager.close(preparedStatement);
+
+        }
+
+        return rowsAffected;
+    }
+    
 }

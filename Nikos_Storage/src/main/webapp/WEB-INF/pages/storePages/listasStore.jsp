@@ -350,51 +350,52 @@
 
 
 </div>
-</section>
 
-<section id="devolucionesList">
-<div class="container-fluid row">
-<div class="col-sm-9 col-md-6 col-lg-8 col-xl-10">
-<div class="card">
-<div class="card-header">
-<h4>Devoluciones Registradas</h4>
-</div>
-<table class="table table-striped table-bordered">
-
-<thead class="thead-dark">
-<tr>
-
-    <th>Codigo</th>
-    <th>Fecha</th>
-    <th>Estado</th>
-    <th>Total</th>
-    <th>Encargado</th>        
-    <th>Envio Devuelto</th>        
-    <th></th>
-
-</tr>
-</thead>
-
-<tbody>
-<c:forEach var="devolucion" items="${devoluciones}">
-    <tr>
-        <td>${devolucion.codigoDevolucion}</td>
-        <td>${devolucion.fechaDevolucion}</td>
-        <td>${devolucion.estadoDevolucion}</td>
-        <td>Q. ${devolucion.totalDevuelto}</td>
-        <td>${devolucion.encargado}</td>
-        <td>${devolucion.envioDevuelto.codigoEnvio}</td>
-    <%-- ${pageContext.request.contextPath}/ManageControlServlet?accion=eliminarTienda&codigoTienda=${tienda.codigo_tienda} --%>
-    <td><a href="#"
-           class="btn btn-secondary"> Detalles </a></td>
-</tr>
-</c:forEach>
-</tbody>
-</table>
-</div>
-</div>
-
-</div>
 </section>
 -->
+
+<section id="devolucionesList">
+    <div class="container-fluid row">
+        <div class="col-sm-9 col-md-6 col-lg-8 col-xl-10">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Devoluciones Registradas</h4>
+                </div>
+                <table class="table table-striped table-bordered">
+
+                    <thead class="thead-dark">
+                        <tr>
+
+                            <th>Codigo</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Total</th>
+                            <th>Encargado</th>        
+                            <th>Envio Devuelto</th>        
+                            <th></th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <c:forEach var="devolucion" items="${devoluciones}">
+                            <tr>
+                                <td>${devolucion.codigoDevolucion}</td>
+                                <td>${devolucion.fechaDevolucion}</td>
+                                <td>${devolucion.estadoDevolucion}</td>
+                                <td>Q. ${devolucion.totalDevuelto}</td>
+                                <td>${devolucion.encargado}</td>
+                                <td>${devolucion.envioDevuelto.codigoEnvio}</td>
+                                <%-- ${pageContext.request.contextPath}/ManageControlServlet?accion=eliminarTienda&codigoTienda=${tienda.codigo_tienda} --%>
+                                <td><a href="#"
+                                       class="btn btn-secondary"> Detalles </a></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
 <jsp:include page="../storePages/store-controlador.jsp"/>

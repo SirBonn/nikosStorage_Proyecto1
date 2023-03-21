@@ -27,8 +27,8 @@ public class EnvioDAO {
 
     public int insertarEnvio(Envio envio) {
 
-        final String SQL_INSERT = "INSERT INTO ENVIOS  (codigo_envio, fecha_envio, fecha_recepcion, "
-                + "estado_envio, precio_envio, productos_enviados, tienda_destino) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        final String SQL_INSERT = "INSERT INTO ENVIOS  (fecha_envio, fecha_recepcion, "
+                + "estado_envio, precio_envio, productos_enviados, tienda_destino) VALUES (?, ?, ?, ?, ?, ?)";
 
         int rowAffected = 0;
         Connection connection = null;
@@ -38,13 +38,12 @@ public class EnvioDAO {
             connection = DBConectionManager.getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT);
 
-            preparedStatement.setInt(1, envio.getCodigoEnvio());
-            preparedStatement.setString(2, envio.getDateEnvio());
-            preparedStatement.setString(3, envio.getDateRecepcion());
-            preparedStatement.setString(4, envio.getEstado());
-            preparedStatement.setDouble(5, envio.getTotalEnvio());
-            preparedStatement.setInt(6, envio.getPedidoEnviado().getCodigoPedido()); //referencia al pedido de envio
-            preparedStatement.setInt(7, envio.getTiendaDestino());
+            preparedStatement.setString(1, envio.getDateEnvio());
+            preparedStatement.setString(2, envio.getDateRecepcion());
+            preparedStatement.setString(3, envio.getEstado());
+            preparedStatement.setDouble(4, envio.getTotalEnvio());
+            preparedStatement.setInt(5, envio.getPedidoEnviado().getCodigoPedido()); //referencia al pedido de envio
+            preparedStatement.setInt(6, envio.getTiendaDestino());
 
             rowAffected = preparedStatement.executeUpdate();
 
