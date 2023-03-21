@@ -243,6 +243,7 @@ public class UsuarioDAO {
                 preparedStatement.setInt(6, usuario.getTienda());
 
             }
+            System.out.println("se agregro un usuario correctamente a " +table);
 
             rowsAfected = preparedStatement.executeUpdate();
 
@@ -252,7 +253,6 @@ public class UsuarioDAO {
             this.informe = ex.getMessage();
 
         } finally {
-            System.out.println("se agregro un usuario correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
@@ -394,5 +394,5 @@ public class UsuarioDAO {
         }
 
     }
-    
+
 }

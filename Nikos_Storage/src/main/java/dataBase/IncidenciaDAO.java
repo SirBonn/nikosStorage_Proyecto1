@@ -46,12 +46,12 @@ public class IncidenciaDAO {
             preparedStatement.setInt(5, incidencia.getEncargado());
 
             rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego un incidencia correctamente");
 
         } catch (SQLException e) {
             System.out.println("error al agregar una incidencai \n" + e);
         } finally {
 
-            System.out.println("se agrego un incidencia correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
@@ -83,7 +83,7 @@ public class IncidenciaDAO {
                 String estado = resultSet.getString("estado_incidencia");
                 Usuario bodegueroEncargado = new Usuario(resultSet.getInt("bodeguero_encargado"));
                 Envio envio = new EnvioDAO().buscarEnvio(new Envio(resultSet.getInt("envio_incidente")));
-                
+
                 incidencia = new Incidencia(codigo, fecha, estado, bodegueroEncargado, envio);
 
                 incidencias.add(incidencia);
@@ -105,7 +105,7 @@ public class IncidenciaDAO {
         return incidencias;
     }
 
-        public Incidencia buscarIncidencia(Incidencia incidencia) {
+    public Incidencia buscarIncidencia(Incidencia incidencia) {
 
         final String SQL_SELECT_BY_ID = "SELECT fecha_incidencia, estado_incidencia, "
                 + "envio_incidente, bodeguero_encargado FROM INCIDENCIAS WHERE codigo_incidencia=?";
@@ -147,7 +147,7 @@ public class IncidenciaDAO {
 
         return incidencia;
     }
-    
+
     public int actualizarIncidencia(Incidencia incidencia) {
 
         final String SQL_UPDATE = "UPDATE INCIDENCIAS SET estado_incidencia = ?, estado_incidencia =? "
@@ -179,7 +179,7 @@ public class IncidenciaDAO {
         return rowsAffected;
     }
 
-public List<Producto> getTopProductosInc(){
+    public List<Producto> getTopProductosInc() {
 
         final String SQL_SELECT = "SELECT PRODUCTOS.codigo_producto, COUNT(*) AS totalProductos FROM "
                 + "PRODUCTOS JOIN RECLAMOS_INCIDENCIAS ON PRODUCTOS.codigo_producto = RECLAMOS_INCIDENCIAS.codigo_producto_incidente "

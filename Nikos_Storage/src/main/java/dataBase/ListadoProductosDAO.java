@@ -35,21 +35,21 @@ public class ListadoProductosDAO {
             List<Producto> productos = lIstadoProductos.getListadoProductos();
 
             for (Producto producto : productos) {
-                
+
                 preparedStatement.setInt(1, lIstadoProductos.getCodigoListado());
                 preparedStatement.setInt(2, producto.getCodigo());
                 preparedStatement.setInt(3, producto.getCantidad());
                 preparedStatement.setDouble(4, producto.getPrecioVenta());
                 preparedStatement.setDouble(5, producto.getTotal());
                 rowAffected = preparedStatement.executeUpdate();
-                
+                System.out.println("se agrego un producto correctamente");
+
             }
 
         } catch (SQLException e) {
             System.out.println("error al agregar un producto\n" + e);
         } finally {
 
-            System.out.println("se agrego un producto correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
@@ -58,7 +58,7 @@ public class ListadoProductosDAO {
         return rowAffected;
 
     }
-    
+
     public List<Producto> listarProductos(Pedido pedido) {
 
         final String SQL_SELECT = "SELECT codigo_producto, cantidad, "
@@ -101,7 +101,7 @@ public class ListadoProductosDAO {
 
         return productos;
     }
-    
+
     public Producto obtenerProducto(Pedido pedido, Producto producto) {
 
         final String SQL_SELECT = "SELECT cantidad, "
@@ -141,8 +141,8 @@ public class ListadoProductosDAO {
 
         return producto;
     }
-    
-        public ListadoProductos listarPedido (Pedido pedido) {
+
+    public ListadoProductos listarPedido(Pedido pedido) {
 
         final String SQL_SELECT = "SELECT codigo_producto, cantidad, "
                 + "precio_costo, precio_total FROM LISTADO_PRODUCTOS WHERE codigo_pedido=?";
@@ -171,9 +171,9 @@ public class ListadoProductosDAO {
                 productos.add(producto);
 
             }
-            
+
             listadoProductos.setListadoProductos(productos);
-            
+
         } catch (SQLException e) {
             e.printStackTrace(System.out);
 
@@ -187,5 +187,5 @@ public class ListadoProductosDAO {
 
         return listadoProductos;
     }
-    
+
 }

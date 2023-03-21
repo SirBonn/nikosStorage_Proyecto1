@@ -46,12 +46,12 @@ public class EnvioDAO {
             preparedStatement.setInt(6, envio.getTiendaDestino());
 
             rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego un envio correctamente");
 
         } catch (SQLException e) {
             System.out.println("error al agregar un Envio\n" + e);
         } finally {
 
-            System.out.println("se agrego un envio correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
@@ -181,7 +181,7 @@ public class EnvioDAO {
                 envio.setEstado(estado);
                 int codigoPedido = resultSet.getInt("productos_enviados");
                 Pedido pedido = new PedidoDAO().buscarPedido(new Pedido(codigoPedido));
-                
+
                 envio.setPedidoEnviado(pedido);
                 Tienda tienda = new TiendaDAO().buscarTienda(new Tienda(resultSet.getInt("tienda_destino")));
                 envio.setTiendaDestino(tienda);
@@ -275,5 +275,5 @@ public class EnvioDAO {
 
         return tiendas;
     }
-    
+
 }

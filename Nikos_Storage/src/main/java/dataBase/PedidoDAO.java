@@ -47,12 +47,12 @@ public class PedidoDAO {
             preparedStatement.setInt(6, pedido.getTienda().getCodigo_tienda());
 
             rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego un pedido correctamente");
 
         } catch (SQLException e) {
             System.out.println("error al agregar un pedido\n" + e);
         } finally {
 
-            System.out.println("se agrego un pedido correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 

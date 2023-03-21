@@ -123,6 +123,7 @@ public class TiendaDAO {
             preparedStatement.setString(4, tienda.getTipo());
 
             rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego una tienda exitosamente");
 
         } catch (SQLException e) {
             System.out.println("hubbo un error al agregar una tienda");
@@ -130,7 +131,6 @@ public class TiendaDAO {
             this.informe = e.getMessage();
 
         } finally {
-            System.out.println("se agrego una tienda exitosamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 

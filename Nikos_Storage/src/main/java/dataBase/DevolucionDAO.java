@@ -49,12 +49,12 @@ public class DevolucionDAO {
             preparedStatement.setInt(6, devolucion.getEncargado());
 
             rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego un devolucion correctamente");
 
         } catch (SQLException e) {
             System.out.println("error al agregar una devolucion \n" + e);
         } finally {
 
-            System.out.println("se agrego un devolucion correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
@@ -109,7 +109,7 @@ public class DevolucionDAO {
 
         return devoluciones;
     }
-    
+
     public Devolucion buscarDevolucion(Devolucion devolucion) {
 
         final String SQL_SELECT_BY_ID = "SELECT fecha_devolucion, estado_devolucion, "
@@ -189,7 +189,7 @@ public class DevolucionDAO {
         return rowsAffected;
     }
 
-    public List<Producto> getTopProductosDev(){
+    public List<Producto> getTopProductosDev() {
 
         final String SQL_SELECT = "SELECT PRODUCTOS.codigo_producto, COUNT(*) AS totalProductos FROM PRODUCTOS "
                 + "JOIN PRODUCTOS_DEVUELTOS ON PRODUCTOS.codigo_producto = PRODUCTOS_DEVUELTOS.codigo_producto_devuelto "
@@ -228,5 +228,5 @@ public class DevolucionDAO {
 
         return productos;
     }
-    
+
 }

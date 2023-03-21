@@ -21,8 +21,8 @@ import lombok.Getter;
 @Getter
 public class ProductoDAO {
 
-    private String informe ="";
-    
+    private String informe = "";
+
     public List<Producto> listarProductos() {
 
         final String SQL_SELECT = "SELECT codigo_producto, nombre_producto, precio_costo_producto, "
@@ -79,7 +79,7 @@ public class ProductoDAO {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                
+
                 String nombre = resultSet.getString("nombre_producto");
                 producto.setNombre(nombre);
                 double costo = resultSet.getDouble("precio_costo_producto");
@@ -88,11 +88,11 @@ public class ProductoDAO {
                 producto.setPrecioVenta(venta);
                 int existencia = resultSet.getInt("existencia_producto");
                 producto.setCantidad(existencia);
-                
+
             }
 
         } catch (SQLException e) {
-            this.informe += e +"\n";
+            this.informe += e + "\n";
             e.printStackTrace(System.out);
 
         } finally {
@@ -126,12 +126,12 @@ public class ProductoDAO {
             preparedStatement.setInt(5, producto.getCantidad());
 
             rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego un producto correctamente");
 
         } catch (SQLException e) {
             System.out.println("error al agregar un producto\n" + e);
         } finally {
 
-            System.out.println("se agrego un producto correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
@@ -202,7 +202,7 @@ public class ProductoDAO {
 
     }
 
-    public List<Producto> getTopProductosPedidos(){
+    public List<Producto> getTopProductosPedidos() {
 
         final String SQL_SELECT = "SELECT PRODUCTOS.codigo_producto, COUNT(*) AS totalProductos FROM "
                 + "PRODUCTOS JOIN LISTADO_PRODUCTOS ON PRODUCTOS.codigo_producto = LISTADO_PRODUCTOS.codigo_producto"
@@ -241,5 +241,5 @@ public class ProductoDAO {
 
         return productos;
     }
-    
+
 }

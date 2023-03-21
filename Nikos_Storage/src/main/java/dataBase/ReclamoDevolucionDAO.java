@@ -32,21 +32,20 @@ public class ReclamoDevolucionDAO {
             preparedStatement = connection.prepareStatement(SQL_INSERT);
             Producto producto = reclamoDevolucion.getProductoDevuelto();
 
+            preparedStatement.setInt(1, reclamoDevolucion.getCodigoDevolucion());
+            preparedStatement.setInt(2, producto.getCodigo());
+            preparedStatement.setInt(3, producto.getCantidad());
+            preparedStatement.setDouble(4, producto.getPrecioVenta());
+            preparedStatement.setDouble(5, producto.getTotal());
+            preparedStatement.setString(6, reclamoDevolucion.getMotivoDevolucion());
 
-                preparedStatement.setInt(1, reclamoDevolucion.getCodigoDevolucion());
-                preparedStatement.setInt(2, producto.getCodigo());
-                preparedStatement.setInt(3, producto.getCantidad());
-                preparedStatement.setDouble(4, producto.getPrecioVenta());
-                preparedStatement.setDouble(5, producto.getTotal());
-                preparedStatement.setString(6, reclamoDevolucion.getMotivoDevolucion());
-
-                rowAffected = preparedStatement.executeUpdate();
+            rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego un reclamo correctamente");
 
         } catch (SQLException e) {
             System.out.println("error al agregar un reclamo\n" + e);
         } finally {
 
-            System.out.println("se agrego un reclamo correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 

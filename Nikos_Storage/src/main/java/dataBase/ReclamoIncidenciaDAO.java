@@ -32,19 +32,18 @@ public class ReclamoIncidenciaDAO {
             preparedStatement = connection.prepareStatement(SQL_INSERT);
             Producto producto = reclamoIncidencia.getProducto();
 
+            preparedStatement.setInt(1, reclamoIncidencia.getCodigoIncidencia());
+            preparedStatement.setInt(2, producto.getCantidad());
+            preparedStatement.setString(3, reclamoIncidencia.getMotivoIncidencia());
+            preparedStatement.setInt(4, producto.getCodigo());
 
-                preparedStatement.setInt(1, reclamoIncidencia.getCodigoIncidencia());
-                preparedStatement.setInt(2, producto.getCantidad());
-                preparedStatement.setString(3, reclamoIncidencia.getMotivoIncidencia());
-                preparedStatement.setInt(4, producto.getCodigo());
-
-                rowAffected = preparedStatement.executeUpdate();
+            rowAffected = preparedStatement.executeUpdate();
+            System.out.println("se agrego un reclamo correctamente");
 
         } catch (SQLException e) {
             System.out.println("error al agregar un reclamo\n" + e);
         } finally {
 
-            System.out.println("se agrego un reclamo correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 

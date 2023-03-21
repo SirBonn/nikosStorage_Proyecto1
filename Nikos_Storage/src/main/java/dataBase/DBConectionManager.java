@@ -19,9 +19,7 @@ public class DBConectionManager {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("se conecto con exito a la db");
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Error en la conexion: " + e);
 
         }
 
@@ -31,7 +29,6 @@ public class DBConectionManager {
     public static void close(Connection conecction) {
         try {
             conecction.close();
-            System.out.println("se desconecto con exito la conexion");
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -41,7 +38,6 @@ public class DBConectionManager {
     public static void close(ResultSet resultSet) {
         try {
             resultSet.close();
-            System.out.println("se cerro con exito el resultSet");
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -51,7 +47,6 @@ public class DBConectionManager {
     public static void close(PreparedStatement preparedStatement) {
         try {
             preparedStatement.close();
-            System.out.println("se cerro con exito el PrpStmnt");
 
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

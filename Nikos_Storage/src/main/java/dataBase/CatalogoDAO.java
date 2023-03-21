@@ -79,13 +79,14 @@ public class CatalogoDAO {
                 preparedStatement.setInt(2, producto.getCodigo());
                 preparedStatement.setInt(3, producto.getCantidad());
                 rowAffected = preparedStatement.executeUpdate();
+                System.out.println("se agrego un catalogo correctamente");
+
             }
 
         } catch (SQLException e) {
             System.out.println("error al agregar un catalogo\n" + e);
         } finally {
 
-            System.out.println("se agrego un catalogo correctamente");
             DBConectionManager.close(connection);
             DBConectionManager.close(preparedStatement);
 
